@@ -1,5 +1,7 @@
+import Admin from './pages/Admin';
+
 function App() {
-    return <div>Waste Into City</div>;
+    return <Admin />;
 }
 
 export default App;

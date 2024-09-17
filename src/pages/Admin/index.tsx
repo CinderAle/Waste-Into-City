@@ -1,5 +1,7 @@
+import MainMap from '@/components/MainMap';
+
 const Admin = () => {
-    return <div>Admin</div>;
+    return <MainMap />;
 };
 
 export default Admin;

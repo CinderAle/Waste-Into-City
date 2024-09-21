@@ -29,6 +29,7 @@ const ButtonText = styled.p`
     font-size: 22px;
     font-weight: bold;
     margin-left: 12px;
+    color: ${COLORS.BLACK};
 `;
 
 export const CloseSectionButton = ({ onClick }: ButtonProps) => {

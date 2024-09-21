@@ -12,7 +12,7 @@ export const SidebarContainer = styled.section`
     display: flex;
     flex-direction: column;
     align-items: center;
-    box-shadow: 1px 0 10px ${COLORS.BLACK};
+    border-right: 2px solid ${COLORS.GRAY};
 `;
 
 const SidebarButton = styled.button`
@@ -22,7 +22,7 @@ const SidebarButton = styled.button`
     outline: none;
     border-width: 2px;
     border-style: solid;
-    font-size: 32px;
+    font-size: 40px;
     color: ${COLORS.WHITE};
     border-color: ${COLORS.WHITE};
     cursor: pointer;
@@ -91,7 +91,7 @@ export const FilterButton = ({ onClick }: ButtonProps) => {
     return (
         <StyledFilterButton onClick={onClick}>
             <StyledFilterIcon>
-                <ReactSVG src={filterIcon} style={{ height: '32px' }} />
+                <ReactSVG src={filterIcon} style={{ height: '40px' }} />
             </StyledFilterIcon>
         </StyledFilterButton>
     );

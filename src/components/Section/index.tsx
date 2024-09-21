@@ -1,5 +1,17 @@
+import { useState } from 'react';
+
+import { SectionContainer } from './styles';
+
 const Section = () => {
-    return <div></div>;
+    const [isHidden, setHidden] = useState(false);
+    const hideSection = () => {
+        setHidden(true);
+    };
+    return (
+        <SectionContainer $hidden={isHidden}>
+            <button onClick={hideSection}>Hide</button>
+        </SectionContainer>
+    );
 };
 
 export default Section;

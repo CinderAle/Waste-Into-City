@@ -21,7 +21,7 @@ const location: YMapLocationRequest = {
 const MainMap = () => {
     return (
         <MapContainer>
-            <YMap location={location} theme="dark">
+            <YMap location={location} theme="light">
                 <YMapDefaultSchemeLayer />
                 <YMapDefaultFeaturesLayer />
                 {trashcans.map((trashcan) => (

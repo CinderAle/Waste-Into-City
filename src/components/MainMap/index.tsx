@@ -1,10 +1,11 @@
 import { YMapLocationRequest } from '@yandex/ymaps3-types';
-import { YMap, YMapDefaultFeaturesLayer,YMapDefaultSchemeLayer } from 'ymap3-components';
+import { YMap, YMapDefaultFeaturesLayer, YMapDefaultSchemeLayer } from 'ymap3-components';
 
 import { Trashcan } from '@/types/trashcan';
 import { TrashcanTypes } from '@/types/trashcanTypes';
 
 import TrashcanMarker from '../TrashcanMarker';
+import { MapContainer } from './styles';
 
 const trashcans: Trashcan[] = [
     new Trashcan('1', { lng: 27.5947648, lat: 53.9108842 }, TrashcanTypes.Common, 0, 0, ''),
@@ -19,7 +20,7 @@ const location: YMapLocationRequest = {
 
 const MainMap = () => {
     return (
-        <div style={{ height: '100vh' }}>
+        <MapContainer>
             <YMap location={location} theme="dark">
                 <YMapDefaultSchemeLayer />
                 <YMapDefaultFeaturesLayer />
@@ -27,7 +28,7 @@ const MainMap = () => {
                     <TrashcanMarker key={trashcan.id} trashcan={trashcan} />
                 ))}
             </YMap>
-        </div>
+        </MapContainer>
     );
 };
 

@@ -1,12 +1,33 @@
-import { Map, Placemark, YMaps } from '@pbe/react-yandex-maps';
+import { YMapLocationRequest } from 'ymaps3';
+
+import { reactify, YMap, YMapDefaultFeaturesLayer, YMapDefaultSchemeLayer } from '@/api/ymaps';
+import { Trashcan } from '@/types/trashcan';
+import { TrashcanTypes } from '@/types/trashcanTypes';
+
+import TrashcanMarker from '../TrashcanMarker';
+
+const trashcans: Trashcan[] = [
+    new Trashcan('1', { lng: 27.5947648, lat: 53.9108842 }, TrashcanTypes.Common, 0, 0, ''),
+    new Trashcan('2', { lng: 27.5945648, lat: 53.9108842 }, TrashcanTypes.Common, 0, 0, ''),
+    new Trashcan('3', { lng: 27.5949648, lat: 53.9108842 }, TrashcanTypes.Common, 0, 0, ''),
+];
+
+const location: YMapLocationRequest = {
+    center: [27.5947648, 53.9108842],
+    zoom: 18,
+};
 
 const MainMap = () => {
     return (
-        <YMaps>
-            <Map defaultState={{ center: [53.9108842, 27.5947648], zoom: 18 }} width="100%" height="100vh">
-                <Placemark geometry={[53.9108842, 27.5947648]} />
-            </Map>
-        </YMaps>
+        <div style={{ height: '100vh' }}>
+            <YMap location={reactify.useDefault(location)} theme="dark">
+                <YMapDefaultSchemeLayer />
+                <YMapDefaultFeaturesLayer />
+                {trashcans.map((trashcan) => (
+                    <TrashcanMarker key={trashcan.id} trashcan={trashcan} />
+                ))}
+            </YMap>
+        </div>
     );
 };
 

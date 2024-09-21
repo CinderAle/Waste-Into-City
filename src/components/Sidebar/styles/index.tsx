@@ -6,13 +6,8 @@ import { COLORS } from '@/constants/colors';
 import { ButtonProps } from '@/types/buttonsProps';
 
 export const SidebarContainer = styled.section`
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100px;
     height: 100%;
-    background-color: ${COLORS.WHITE};
-    z-index: 1;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -36,12 +31,12 @@ const SidebarButton = styled.button`
 
     @media (hover: hover) {
         &:hover {
-            background-color: ${COLORS.WHITE};
+            background-color: ${COLORS.TRANSPARENT};
         }
     }
     @media (hover: none) {
         &:active {
-            background-color: ${COLORS.WHITE};
+            background-color: ${COLORS.TRANSPARENT};
         }
     }
 `;

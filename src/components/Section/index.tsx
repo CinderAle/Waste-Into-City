@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { SectionContainer } from './styles';
+import { CloseSectionButton, SectionContainer } from './styles';
 
 const Section = () => {
     const [isHidden, setHidden] = useState(false);
@@ -9,7 +9,7 @@ const Section = () => {
     };
     return (
         <SectionContainer $hidden={isHidden}>
-            <button onClick={hideSection}>Hide</button>
+            <CloseSectionButton onClick={hideSection} />
         </SectionContainer>
     );
 };

@@ -1,6 +1,6 @@
-import { YMapLocationRequest } from 'ymaps3';
+import { YMapLocationRequest } from '@yandex/ymaps3-types';
+import { YMap, YMapDefaultFeaturesLayer,YMapDefaultSchemeLayer } from 'ymap3-components';
 
-import { reactify, YMap, YMapDefaultFeaturesLayer, YMapDefaultSchemeLayer } from '@/api/ymaps';
 import { Trashcan } from '@/types/trashcan';
 import { TrashcanTypes } from '@/types/trashcanTypes';
 
@@ -20,7 +20,7 @@ const location: YMapLocationRequest = {
 const MainMap = () => {
     return (
         <div style={{ height: '100vh' }}>
-            <YMap location={reactify.useDefault(location)} theme="dark">
+            <YMap location={location} theme="dark">
                 <YMapDefaultSchemeLayer />
                 <YMapDefaultFeaturesLayer />
                 {trashcans.map((trashcan) => (

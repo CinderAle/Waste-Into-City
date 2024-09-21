@@ -1,4 +1,5 @@
-import { YMapMarker } from '@/api/ymaps';
+import { YMapMarker } from 'ymap3-components';
+
 import { Trashcan } from '@/types/trashcan';
 
 type Props = {

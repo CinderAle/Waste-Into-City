@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import closeSectionIcon from '@/assets/icons/svg/closeSectionIcon.svg';
 import { COLORS } from '@/constants/colors';
-import { ButtonProps } from '@/types/buttonsProps';
+import { ButtonProps } from '@/types/buttonProps';
 
 export const SectionContainer = styled.div<{ $hidden?: boolean }>`
     transition: 0.2s linear;

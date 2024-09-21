@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import filterIcon from '@/assets/icons/svg/filterIcon.svg';
 import { COLORS } from '@/constants/colors';
-import { ButtonProps } from '@/types/buttonsProps';
+import { ButtonProps } from '@/types/buttonProps';
 
 export const SidebarContainer = styled.section`
     width: 100px;

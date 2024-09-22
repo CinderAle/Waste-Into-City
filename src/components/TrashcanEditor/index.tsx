@@ -1,5 +1,8 @@
+import { TrashcanTypes } from '@/types/trashcanTypes';
+
 import FillSlider from '../FillSlider';
 import ImageInput from '../ImageInput';
+import TypeSelect from '../TypeSelect';
 import {
     ButtonsArea,
     EditorContainer,
@@ -10,9 +13,11 @@ import {
     TypingFields,
 } from './styles';
 
-//Temporary comment
-
 const TrashcanEditor = () => {
+    const handleSelect = (trashcanType: TrashcanTypes) => {
+        console.log(trashcanType);
+    };
+
     return (
         <EditorContainer>
             <ObligatoryFields>
@@ -23,6 +28,7 @@ const TrashcanEditor = () => {
                     <Input label="Type" />
                 </TypingFields>
             </ObligatoryFields>
+            <TypeSelect onSelect={handleSelect} />
             <ButtonsArea>
                 <SetLocationButton>Set Location</SetLocationButton>
                 <SaveButton>Save changes</SaveButton>

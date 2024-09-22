@@ -34,8 +34,17 @@ const TrashcanTypeContainer = styled.div`
 
 const TrashcanTypeText = styled.p`
     display: block;
-    margin-left: 20px;
+    margin-left: 10px;
     font-size: 20px;
+`;
+
+const TrashcanTypeIcon = styled.div`
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `;
 
 const ScrollbarContainer = styled.div`
@@ -67,10 +76,12 @@ export const Container = ({ children }: ContainerProps) => {
 export const TrashcanType = ({ children, onClick, icon }: TypedContainerProps) => {
     return (
         <TrashcanTypeContainer onClick={onClick}>
-            <ReactSVG
-                src={`src/assets/icons/svg/trashcanTypes/${icon?.toLowerCase()}.svg`}
-                style={{ width: '40px', height: '40px' }}
-            />
+            <TrashcanTypeIcon>
+                <ReactSVG
+                    src={`src/assets/icons/svg/trashcanTypes/${icon?.toLowerCase()}.svg`}
+                    style={{ width: '40px', height: '40px' }}
+                />
+            </TrashcanTypeIcon>
             <TrashcanTypeText>{children}</TrashcanTypeText>
         </TrashcanTypeContainer>
     );

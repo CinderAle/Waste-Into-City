@@ -7,7 +7,7 @@ const InputField = styled.input`
     width: 100%;
     padding: 5px 7px;
     outline: none;
-    border: 2px solid ${COLORS.GRAY};
+    border: 2px solid ${COLORS.NEUTRAL_GRAY};
     background-color: ${COLORS.TRANSPARENT};
     color: ${COLORS.BLACK};
     margin: 10px 0;
@@ -31,7 +31,7 @@ const InputLabel = styled.label`
     left: 20px;
     background-color: ${COLORS.WHITE};
     padding: 0 5px;
-    color: ${COLORS.GRAY};
+    color: ${COLORS.NEUTRAL_GRAY};
 `;
 
 export const Input = ({ label }: InputProps) => {

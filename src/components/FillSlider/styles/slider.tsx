@@ -22,7 +22,7 @@ const SliderInput = styled.input<{ $value: number }>`
     background: linear-gradient(
         to right,
         ${COLORS.GREEN} ${(props) => props.$value}%,
-        ${COLORS.GRAY} ${(props) => props.$value}%
+        ${COLORS.NEUTRAL_GRAY} ${(props) => props.$value}%
     );
 
     &::-webkit-slider-thumb {

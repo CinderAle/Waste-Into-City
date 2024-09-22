@@ -24,6 +24,7 @@ const StyledButton = styled.button`
     fill: ${COLORS.GREEN};
     width: fit-content;
     min-width: fit-content;
+    margin-bottom: 20px;
 `;
 const ButtonText = styled.p`
     font-size: 22px;

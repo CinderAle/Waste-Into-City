@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import TrashcanEditor from '../TrashcanEditor';
 import { CloseSectionButton, SectionContainer } from './styles';
 
 const Section = () => {
@@ -10,6 +11,7 @@ const Section = () => {
     return (
         <SectionContainer $hidden={isHidden}>
             <CloseSectionButton onClick={hideSection} />
+            <TrashcanEditor />
         </SectionContainer>
     );
 };

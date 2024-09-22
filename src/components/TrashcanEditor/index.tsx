@@ -11,6 +11,7 @@ import {
     SaveButton,
     SetLocationButton,
     TypingFields,
+    UpperControls,
 } from './styles';
 
 const TrashcanEditor = () => {
@@ -20,15 +21,17 @@ const TrashcanEditor = () => {
 
     return (
         <EditorContainer>
-            <ObligatoryFields>
-                <ImageInput />
-                <TypingFields>
-                    <FillSlider />
-                    <Input label="Volume" />
-                    <Input label="Type" />
-                </TypingFields>
-            </ObligatoryFields>
-            <TypeSelect onSelect={handleSelect} />
+            <UpperControls>
+                <ObligatoryFields>
+                    <ImageInput />
+                    <TypingFields>
+                        <FillSlider />
+                        <Input label="Volume" />
+                        <Input label="Type" />
+                    </TypingFields>
+                </ObligatoryFields>
+                <TypeSelect onSelect={handleSelect} />
+            </UpperControls>
             <ButtonsArea>
                 <SetLocationButton>Set Location</SetLocationButton>
                 <SaveButton>Save changes</SaveButton>

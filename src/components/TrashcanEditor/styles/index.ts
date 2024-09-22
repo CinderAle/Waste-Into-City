@@ -14,6 +14,12 @@ export const ObligatoryFields = styled.div`
     justify-content: space-between;
 `;
 
+export const UpperControls = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+`;
+
 export const TypingFields = styled.div`
     width: 200px;
 `;

@@ -40,4 +40,4 @@ export const SaveButton = styled.button`
     margin-top: 10px;
 `;
 
-export { Input } from './input';
+export { Input, Select } from './input';

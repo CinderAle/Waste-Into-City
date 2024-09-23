@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { TrashcanTypes } from '@/types/trashcanTypes';
 
 import FillSlider from '../FillSlider';
@@ -9,14 +11,23 @@ import {
     Input,
     ObligatoryFields,
     SaveButton,
+    Select,
     SetLocationButton,
     TypingFields,
     UpperControls,
 } from './styles';
 
 const TrashcanEditor = () => {
+    const [isShowingTypes, setShowingTypes] = useState(false);
+    const [selectedType, setSelectedType] = useState(TrashcanTypes.Common);
+
     const handleSelect = (trashcanType: TrashcanTypes) => {
-        console.log(trashcanType);
+        setSelectedType(trashcanType);
+        setShowingTypes(false);
+    };
+
+    const handleClick = () => {
+        setShowingTypes(!isShowingTypes);
     };
 
     return (
@@ -27,10 +38,10 @@ const TrashcanEditor = () => {
                     <TypingFields>
                         <FillSlider />
                         <Input label="Volume" />
-                        <Input label="Type" />
+                        <Select label="Type" onClick={handleClick} readOnly value={selectedType} />
                     </TypingFields>
                 </ObligatoryFields>
-                <TypeSelect onSelect={handleSelect} />
+                {isShowingTypes && <TypeSelect onSelect={handleSelect} />}
             </UpperControls>
             <ButtonsArea>
                 <SetLocationButton>Set Location</SetLocationButton>

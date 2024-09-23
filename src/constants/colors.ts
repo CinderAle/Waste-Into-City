@@ -5,4 +5,5 @@ export const COLORS = {
     TRANSPARENT: '#00000000',
     GRAY: '#6e6e6e',
     NEUTRAL_GRAY: '#8f8f8f',
+    YELLOW: '#dba444',
 };

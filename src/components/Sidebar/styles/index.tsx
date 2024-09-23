@@ -42,17 +42,17 @@ const SidebarButton = styled.button`
 `;
 
 const StyledAddButton = styled(SidebarButton)`
-    background-color: ${COLORS.GREEN};
-    border-color: ${COLORS.GREEN};
+    background-color: ${COLORS.YELLOW};
+    border-color: ${COLORS.YELLOW};
 
     @media (hover: hover) {
         &:hover {
-            color: ${COLORS.GREEN};
+            color: ${COLORS.YELLOW};
         }
     }
     @media (hover: none) {
         &:active {
-            color: ${COLORS.GREEN};
+            color: ${COLORS.YELLOW};
         }
     }
 `;

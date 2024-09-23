@@ -1,9 +1,13 @@
-import { YMapLocationRequest } from '@yandex/ymaps3-types';
+import { YMap as YmapComponent,YMapLocationRequest } from '@yandex/ymaps3-types';
+import { useEffect, useRef } from 'react';
 import { YMap, YMapDefaultFeaturesLayer, YMapDefaultSchemeLayer } from 'ymap3-components';
 
+import { useAction } from '@/hooks/useAction';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { Trashcan } from '@/types/trashcan';
 import { TrashcanTypes } from '@/types/trashcanTypes';
 
+import EditPositionMarker from '../EditPositionMarker';
 import TrashcanMarker from '../TrashcanMarker';
 import { MapContainer } from './styles';
 
@@ -13,20 +17,32 @@ const trashcans: Trashcan[] = [
     new Trashcan('3', { lng: 27.5949648, lat: 53.9108842 }, TrashcanTypes.Common, 0, 0, ''),
 ];
 
-const location: YMapLocationRequest = {
+const defaultLocation: YMapLocationRequest = {
     center: [27.5947648, 53.9108842],
     zoom: 18,
 };
 
 const MainMap = () => {
+    const ymapRef = useRef<YmapComponent>(null);
+    const { setCoordinates } = useAction();
+    const isInEditingMode = useTypedSelector((state) => state.mapClick.isInEditingMode);
+
+    useEffect(() => {
+        if (!isInEditingMode && ymapRef.current) {
+            const center = ymapRef.current.center;
+            setCoordinates({ lng: center[0], lat: center[1] });
+        }
+    }, [isInEditingMode]);
+
     return (
         <MapContainer>
-            <YMap location={location} theme="light">
+            <YMap ref={ymapRef} location={defaultLocation} theme="light">
                 <YMapDefaultSchemeLayer />
                 <YMapDefaultFeaturesLayer />
                 {trashcans.map((trashcan) => (
                     <TrashcanMarker key={trashcan.id} trashcan={trashcan} />
                 ))}
+                <EditPositionMarker />
             </YMap>
         </MapContainer>
     );

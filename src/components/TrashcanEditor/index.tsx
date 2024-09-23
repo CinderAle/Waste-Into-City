@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import { useAction } from '@/hooks/useAction';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { TrashcanTypes } from '@/types/trashcanTypes';
 
 import FillSlider from '../FillSlider';
@@ -20,6 +22,8 @@ import {
 const TrashcanEditor = () => {
     const [isShowingTypes, setShowingTypes] = useState(false);
     const [selectedType, setSelectedType] = useState(TrashcanTypes.Common);
+    const { startCoordinatesEditing, stopCoordinatesEditing } = useAction();
+    const isEditing = useTypedSelector((state) => state.mapClick.isInEditingMode);
 
     const handleSelect = (trashcanType: TrashcanTypes) => {
         setSelectedType(trashcanType);
@@ -28,6 +32,14 @@ const TrashcanEditor = () => {
 
     const handleClick = () => {
         setShowingTypes(!isShowingTypes);
+    };
+
+    const handleSetLocationClick = () => {
+        if (isEditing) {
+            stopCoordinatesEditing();
+        } else {
+            startCoordinatesEditing();
+        }
     };
 
     return (
@@ -44,7 +56,9 @@ const TrashcanEditor = () => {
                 {isShowingTypes && <TypeSelect onSelect={handleSelect} />}
             </UpperControls>
             <ButtonsArea>
-                <SetLocationButton>Set Location</SetLocationButton>
+                <SetLocationButton onClick={handleSetLocationClick}>
+                    {isEditing ? 'Set Location' : 'Update Location'}
+                </SetLocationButton>
                 <SaveButton>Save changes</SaveButton>
             </ButtonsArea>
         </EditorContainer>

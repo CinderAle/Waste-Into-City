@@ -2,8 +2,12 @@ import { ChangeEvent, useState } from 'react';
 
 import { Slider, SliderContainer, SliderValue } from './styles';
 
-const FillSlider = () => {
-    const [percents, setPercents] = useState(0);
+type Props = {
+    value?: number;
+};
+
+const FillSlider = ({ value }: Props) => {
+    const [percents, setPercents] = useState(value);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setPercents(Number(e.currentTarget.value));

@@ -4,6 +4,6 @@ export type InputProps = {
     onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
     onClick?: () => void;
     label?: string;
-    value?: string;
+    value?: string | undefined;
     readOnly?: boolean;
 };

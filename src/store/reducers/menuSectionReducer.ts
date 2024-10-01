@@ -1,7 +1,8 @@
 import { MenuSectionAction, MenuSections, MenuSectionState } from '@/types/menuSection';
 
 const initialState: MenuSectionState = {
-    section: undefined,
+    section: null,
+    trashcan: null,
 };
 
 export const menuSectionReducer = (
@@ -10,12 +11,13 @@ export const menuSectionReducer = (
 ): MenuSectionState => {
     switch (action.type) {
         case MenuSections.NoSection:
-            return { ...state, section: undefined };
+            return initialState;
         case MenuSections.AddTrashcanSection:
         case MenuSections.FilterTrashcansSection:
         case MenuSections.TrashcanInfoSection:
+            return { ...state, section: action.payload.component };
         case MenuSections.UpdateTrashcanSection:
-            return { ...state, section: action.payload };
+            return { ...state, section: action.payload.component, trashcan: action.payload.props };
         default:
             return state;
     }

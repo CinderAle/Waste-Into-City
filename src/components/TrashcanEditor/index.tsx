@@ -1,8 +1,7 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import { useAction } from '@/hooks/useAction';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
-import { Trashcan } from '@/types/trashcan';
 import { TrashcanTypes } from '@/types/trashcanTypes';
 
 import FillSlider from '../FillSlider';
@@ -20,17 +19,22 @@ import {
     UpperControls,
 } from './styles';
 
-type Props = {
-    trashcan?: Trashcan;
-};
-
-const TrashcanEditor = ({ trashcan }: Props) => {
+const TrashcanEditor = () => {
     const [isShowingTypes, setShowingTypes] = useState(false);
+    const trashcan = useTypedSelector((state) => state.menuSection.trashcan);
     //const isAddEditor = useRef(trashcan === undefined);
 
-    const [selectedType, setSelectedType] = useState(trashcan?.type ?? TrashcanTypes.Common);
-    const [volume, setVolume] = useState(trashcan?.volume ?? 0);
-    const [fill, setFill] = useState(trashcan?.fill ?? 0);
+    const [selectedType, setSelectedType] = useState(TrashcanTypes.Common);
+    const [volume, setVolume] = useState(0);
+    const [fill, setFill] = useState('0');
+
+    useEffect(() => {
+        if (trashcan) {
+            setSelectedType(trashcan.type);
+            setVolume(trashcan.volume);
+            setFill(String(trashcan.fill));
+        }
+    }, [trashcan]);
 
     const { startCoordinatesEditing, stopCoordinatesEditing } = useAction();
     const { isInEditingMode: isEditing } = useTypedSelector((state) => state.mapClick);
@@ -45,7 +49,7 @@ const TrashcanEditor = ({ trashcan }: Props) => {
     };
 
     const handleFillChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setFill(Number(event.currentTarget.value));
+        setFill(event.currentTarget.value);
     };
 
     const handleClick = () => {
@@ -61,7 +65,7 @@ const TrashcanEditor = ({ trashcan }: Props) => {
     };
 
     const handleSaveButtonClick = () => {
-        console.log();
+        console.log('save');
     };
 
     return (
@@ -70,7 +74,7 @@ const TrashcanEditor = ({ trashcan }: Props) => {
                 <ObligatoryFields>
                     <ImageInput />
                     <TypingFields>
-                        <FillSlider value={String(fill)} onChange={handleFillChange} />
+                        <FillSlider value={fill} onChange={handleFillChange} />
                         <Input label="Volume" value={String(volume)} onChange={handleVolumeChange} />
                         <Select label="Type" onClick={handleClick} readOnly value={selectedType} />
                     </TypingFields>

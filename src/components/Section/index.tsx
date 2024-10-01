@@ -11,7 +11,7 @@ const Section = () => {
     const { hideSection } = useAction();
 
     useEffect(() => {
-        setHidden(OpenSection === undefined);
+        setHidden(OpenSection === null);
     }, [OpenSection]);
 
     const handleSectionClose = () => {

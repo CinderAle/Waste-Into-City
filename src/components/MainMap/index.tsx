@@ -13,9 +13,9 @@ import TrashcanMarker from '../TrashcanMarker';
 import { MapContainer } from './styles';
 
 const trashcans: Trashcan[] = [
-    new Trashcan('1', { lng: 27.5947648, lat: 53.9108842 }, TrashcanTypes.Common, 0, 0, ''),
-    new Trashcan('2', { lng: 27.5945648, lat: 53.9108842 }, TrashcanTypes.Common, 0, 0, ''),
-    new Trashcan('3', { lng: 27.5949648, lat: 53.9108842 }, TrashcanTypes.Common, 0, 0, ''),
+    new Trashcan('1', { lng: 27.5947648, lat: 53.9108842 }, TrashcanTypes.Common, 52, 0, ''),
+    new Trashcan('2', { lng: 27.5945648, lat: 53.9108842 }, TrashcanTypes.Recycle, 42, 50, ''),
+    new Trashcan('3', { lng: 27.5949648, lat: 53.9108842 }, TrashcanTypes.Plastic, 20, 100, ''),
 ];
 
 const defaultLocation: YMapLocationRequest = {
@@ -27,7 +27,7 @@ const MainMap = () => {
     const ymapRef = useRef<YmapComponent>(null);
     const { setCoordinates } = useAction();
     const isInEditingMode = useTypedSelector((state) => state.mapClick.isInEditingMode);
-    const currentSection = useTypedSelector((state) => state.menuSection.section);
+    const { section: currentSection, trashcan } = useTypedSelector((state) => state.menuSection);
 
     useEffect(() => {
         if (!isInEditingMode && ymapRef.current && currentSection === TrashcanEditor) {
@@ -44,7 +44,7 @@ const MainMap = () => {
                 {trashcans.map((trashcan) => (
                     <TrashcanMarker key={trashcan.id} trashcan={trashcan} />
                 ))}
-                {currentSection === TrashcanEditor && <EditPositionMarker />}
+                {currentSection === TrashcanEditor && !trashcan && <EditPositionMarker />}
             </YMap>
         </MapContainer>
     );

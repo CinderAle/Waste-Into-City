@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import { InputProps } from '@/types/inputProps';
 
@@ -6,6 +6,10 @@ import { Slider, SliderContainer, SliderValue } from './styles';
 
 const FillSlider = ({ value, onChange }: InputProps) => {
     const [percents, setPercents] = useState(value);
+
+    useEffect(() => {
+        setPercents(value);
+    }, [value]);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setPercents(e.currentTarget.value);

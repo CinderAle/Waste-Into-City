@@ -1,3 +1,5 @@
+import { Trashcan } from './trashcan';
+
 export enum MenuSections {
     AddTrashcanSection = 'AddTrashcanSection',
     UpdateTrashcanSection = 'UpdateTrashcanSection',
@@ -7,27 +9,30 @@ export enum MenuSections {
 }
 
 export type MenuSectionState = {
-    section: ((...args: any[]) => JSX.Element) | undefined;
+    section: ((...args: any[]) => JSX.Element) | null;
+    trashcan: Trashcan | null;
 };
+
+type MenuSectionActionPayload = { component: (...args: any[]) => JSX.Element; props?: Trashcan };
 
 type AddTrashcan = {
     type: MenuSections.AddTrashcanSection;
-    payload: (...args: any[]) => JSX.Element;
+    payload: MenuSectionActionPayload;
 };
 
 type UpdateTrashcan = {
     type: MenuSections.UpdateTrashcanSection;
-    payload: (...args: any[]) => JSX.Element;
+    payload: Required<MenuSectionActionPayload>;
 };
 
 type FilterTrashcans = {
     type: MenuSections.FilterTrashcansSection;
-    payload: (...args: any[]) => JSX.Element;
+    payload: MenuSectionActionPayload;
 };
 
 type ShowTrashcanInfo = {
     type: MenuSections.TrashcanInfoSection;
-    payload: (...args: any[]) => JSX.Element;
+    payload: MenuSectionActionPayload;
 };
 
 type HideSection = {

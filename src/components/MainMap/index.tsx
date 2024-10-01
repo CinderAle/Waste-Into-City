@@ -1,4 +1,4 @@
-import { YMap as YmapComponent,YMapLocationRequest } from '@yandex/ymaps3-types';
+import { YMap as YmapComponent, YMapLocationRequest } from '@yandex/ymaps3-types';
 import { useEffect, useRef } from 'react';
 import { YMap, YMapDefaultFeaturesLayer, YMapDefaultSchemeLayer } from 'ymap3-components';
 
@@ -8,6 +8,7 @@ import { Trashcan } from '@/types/trashcan';
 import { TrashcanTypes } from '@/types/trashcanTypes';
 
 import EditPositionMarker from '../EditPositionMarker';
+import TrashcanEditor from '../TrashcanEditor';
 import TrashcanMarker from '../TrashcanMarker';
 import { MapContainer } from './styles';
 
@@ -26,9 +27,10 @@ const MainMap = () => {
     const ymapRef = useRef<YmapComponent>(null);
     const { setCoordinates } = useAction();
     const isInEditingMode = useTypedSelector((state) => state.mapClick.isInEditingMode);
+    const currentSection = useTypedSelector((state) => state.menuSection.section);
 
     useEffect(() => {
-        if (!isInEditingMode && ymapRef.current) {
+        if (!isInEditingMode && ymapRef.current && currentSection === TrashcanEditor) {
             const center = ymapRef.current.center;
             setCoordinates({ lng: center[0], lat: center[1] });
         }
@@ -42,7 +44,7 @@ const MainMap = () => {
                 {trashcans.map((trashcan) => (
                     <TrashcanMarker key={trashcan.id} trashcan={trashcan} />
                 ))}
-                <EditPositionMarker />
+                {currentSection === TrashcanEditor && <EditPositionMarker />}
             </YMap>
         </MapContainer>
     );

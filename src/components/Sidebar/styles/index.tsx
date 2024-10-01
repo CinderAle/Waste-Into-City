@@ -57,8 +57,8 @@ const StyledAddButton = styled(SidebarButton)`
     }
 `;
 
-export const AddButton = () => {
-    return <StyledAddButton>+</StyledAddButton>;
+export const AddButton = ({ onClick }: ButtonProps) => {
+    return <StyledAddButton onClick={onClick}>+</StyledAddButton>;
 };
 
 export const StyledFilterButton = styled(SidebarButton)`

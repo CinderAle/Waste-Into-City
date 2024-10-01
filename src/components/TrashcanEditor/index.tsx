@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 import { useAction } from '@/hooks/useAction';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
@@ -26,21 +26,26 @@ type Props = {
 
 const TrashcanEditor = ({ trashcan }: Props) => {
     const [isShowingTypes, setShowingTypes] = useState(false);
-    const [selectedType, setSelectedType] = useState(TrashcanTypes.Common);
-    const { startCoordinatesEditing, stopCoordinatesEditing } = useAction();
-    const isEditing = useTypedSelector((state) => state.mapClick.isInEditingMode);
-    const isAddEditor = useRef(trashcan === undefined);
+    //const isAddEditor = useRef(trashcan === undefined);
 
-    useEffect(() => {
-        if (isAddEditor) {
-            trashcan = new Trashcan('', { lat: 0, lng: 0 }, TrashcanTypes.Common, 0, 0, '');
-        }
-        setSelectedType(trashcan?.type ?? TrashcanTypes.Common);
-    });
+    const [selectedType, setSelectedType] = useState(trashcan?.type ?? TrashcanTypes.Common);
+    const [volume, setVolume] = useState(trashcan?.volume ?? 0);
+    const [fill, setFill] = useState(trashcan?.fill ?? 0);
+
+    const { startCoordinatesEditing, stopCoordinatesEditing } = useAction();
+    const { isInEditingMode: isEditing } = useTypedSelector((state) => state.mapClick);
 
     const handleSelect = (trashcanType: TrashcanTypes) => {
         setSelectedType(trashcanType);
         setShowingTypes(false);
+    };
+
+    const handleVolumeChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setVolume(Number(event.currentTarget.value));
+    };
+
+    const handleFillChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setFill(Number(event.currentTarget.value));
     };
 
     const handleClick = () => {
@@ -65,8 +70,8 @@ const TrashcanEditor = ({ trashcan }: Props) => {
                 <ObligatoryFields>
                     <ImageInput />
                     <TypingFields>
-                        <FillSlider value={trashcan?.fill} />
-                        <Input label="Volume" value={String(trashcan?.volume)} />
+                        <FillSlider value={String(fill)} onChange={handleFillChange} />
+                        <Input label="Volume" value={String(volume)} onChange={handleVolumeChange} />
                         <Select label="Type" onClick={handleClick} readOnly value={selectedType} />
                     </TypingFields>
                 </ObligatoryFields>

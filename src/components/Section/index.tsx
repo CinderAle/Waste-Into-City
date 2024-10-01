@@ -1,17 +1,27 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import TrashcanEditor from '../TrashcanEditor';
+import { useAction } from '@/hooks/useAction';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
+
 import { CloseSectionButton, SectionContainer } from './styles';
 
 const Section = () => {
-    const [isHidden, setHidden] = useState(false);
-    const hideSection = () => {
-        setHidden(true);
+    const [isHidden, setHidden] = useState(true);
+    const OpenSection = useTypedSelector((state) => state.menuSection.section);
+    const { hideSection } = useAction();
+
+    useEffect(() => {
+        setHidden(OpenSection === undefined);
+    }, [OpenSection]);
+
+    const handleSectionClose = () => {
+        hideSection();
     };
+
     return (
         <SectionContainer $hidden={isHidden}>
-            <CloseSectionButton onClick={hideSection} />
-            <TrashcanEditor />
+            <CloseSectionButton onClick={handleSectionClose} />
+            {OpenSection && <OpenSection />}
         </SectionContainer>
     );
 };

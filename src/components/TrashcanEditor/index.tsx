@@ -9,6 +9,7 @@ import ImageInput from '../ImageInput';
 import TypeSelect from '../TypeSelect';
 import {
     ButtonsArea,
+    DeleteButton,
     EditorContainer,
     Input,
     ObligatoryFields,
@@ -22,7 +23,6 @@ import {
 const TrashcanEditor = () => {
     const [isShowingTypes, setShowingTypes] = useState(false);
     const trashcan = useTypedSelector((state) => state.menuSection.trashcan);
-    //const isAddEditor = useRef(trashcan === undefined);
 
     const [selectedType, setSelectedType] = useState(TrashcanTypes.Common);
     const [volume, setVolume] = useState(0);
@@ -64,6 +64,10 @@ const TrashcanEditor = () => {
         }
     };
 
+    const handleDeleteButtonClick = () => {
+        console.log('delete');
+    };
+
     const handleSaveButtonClick = () => {
         console.log('save');
     };
@@ -85,6 +89,7 @@ const TrashcanEditor = () => {
                 <SetLocationButton onClick={handleSetLocationClick}>
                     {isEditing ? 'Set Location' : 'Update Location'}
                 </SetLocationButton>
+                {trashcan && <DeleteButton onClick={handleDeleteButtonClick}>Delete</DeleteButton>}
                 <SaveButton onClick={handleSaveButtonClick}>Save changes</SaveButton>
             </ButtonsArea>
         </EditorContainer>

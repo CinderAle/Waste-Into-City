@@ -49,22 +49,25 @@ const EditorButton = styled.button`
     transition: 0.1s linear;
 `;
 
-export const SetLocationButton = styled(EditorButton)`
-    background-color: ${COLORS.GREEN};
-    border-color: ${COLORS.GREEN};
+const ButtonColors = (color: string) => `
+    background-color: ${color};
+    border-color: ${color};
 
     &:hover {
-        color: ${COLORS.GREEN};
+        color: ${color};
     }
 `;
 
-export const SaveButton = styled(EditorButton)`
-    background-color: ${COLORS.YELLOW};
-    border-color: ${COLORS.YELLOW};
+export const SetLocationButton = styled(EditorButton)`
+    ${ButtonColors(COLORS.GREEN)}
+`;
 
-    &:hover {
-        color: ${COLORS.YELLOW};
-    }
+export const SaveButton = styled(EditorButton)`
+    ${ButtonColors(COLORS.YELLOW)}
+`;
+
+export const DeleteButton = styled(EditorButton)`
+    ${ButtonColors(COLORS.NEUTRAL_GRAY)}
 `;
 
 export { Input, Select } from './input';

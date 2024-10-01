@@ -6,4 +6,5 @@ export type InputProps = {
     label?: string;
     value?: string | undefined;
     readOnly?: boolean;
+    className?: string;
 };

@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
 
@@ -28,14 +28,15 @@ const TrashcanTypeContainer = styled.div`
     padding: 10px 0;
     display: flex;
     align-items: center;
-    color: ${COLORS.NEUTRAL_GRAY};
     padding-left: 10px;
+    cursor: pointer;
 `;
 
-const TrashcanTypeText = styled.p`
+const TrashcanTypeText = styled.p<{ $isSelected: boolean }>`
     display: block;
     margin-left: 10px;
     font-size: 20px;
+    color: ${(props) => (props.$isSelected ? COLORS.BLACK : COLORS.NEUTRAL_GRAY)};
 `;
 
 const TrashcanTypeIcon = styled.div`
@@ -74,15 +75,22 @@ export const Container = ({ children }: ContainerProps) => {
 };
 
 export const TrashcanType = ({ children, onClick, icon }: TypedContainerProps) => {
+    const [isSelected, setSelected] = useState(false);
+
+    const handleClick = () => {
+        setSelected(!isSelected);
+        onClick?.call(null);
+    };
+
     return (
-        <TrashcanTypeContainer onClick={onClick}>
+        <TrashcanTypeContainer onClick={handleClick}>
             <TrashcanTypeIcon>
                 <ReactSVG
                     src={`src/assets/icons/svg/trashcanTypes/${icon?.toLowerCase()}.svg`}
                     style={{ width: '40px', height: '40px' }}
                 />
             </TrashcanTypeIcon>
-            <TrashcanTypeText>{children}</TrashcanTypeText>
+            <TrashcanTypeText $isSelected={isSelected}>{children}</TrashcanTypeText>
         </TrashcanTypeContainer>
     );
 };

@@ -24,7 +24,6 @@ const InputField = styled.input`
 
 const InputWrapper = styled.div`
     position: relative;
-    width: 100%;
 `;
 
 const InputLabel = styled.label`
@@ -54,9 +53,9 @@ const SelectField = styled(InputField)`
     cursor: pointer;
 `;
 
-export const Input = ({ label, value, onClick, onChange, readOnly }: InputProps) => {
+export const Input = ({ label, value, onClick, onChange, readOnly, className }: InputProps) => {
     return (
-        <InputWrapper>
+        <InputWrapper className={className}>
             <InputLabel>{label}</InputLabel>
             <InputField value={value} onClick={onClick} onChange={onChange} readOnly={readOnly} />
         </InputWrapper>

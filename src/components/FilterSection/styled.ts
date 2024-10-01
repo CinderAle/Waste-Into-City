@@ -1,33 +1,24 @@
 import styled from 'styled-components';
 
 import { COLORS } from '@/constants/colors';
+import { Input } from '@/styles/input';
 
-export const EditorContainer = styled.div`
+export const FiltersContainer = styled.section`
+    display: flex;
     width: 100%;
     height: 100%;
-    display: flex;
     flex-direction: column;
     justify-content: space-between;
 `;
 
-export const ObligatoryFields = styled.div`
+export const FieldsContainer = styled.div``;
+
+export const ButtonsContainer = styled.div``;
+
+export const InputPairContainer = styled.div`
     width: 100%;
     display: flex;
-    justify-content: space-between;
-`;
-
-export const UpperControls = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-`;
-
-export const TypingFields = styled.div`
-    width: 200px;
-`;
-
-export const ButtonsArea = styled.div`
-    width: 100%;
+    justify-content: space-betweeen;
 `;
 
 const EditorButton = styled.button`
@@ -58,16 +49,15 @@ const ButtonColors = (color: string) => `
     }
 `;
 
-export const SetLocationButton = styled(EditorButton)`
-    ${ButtonColors(COLORS.GREEN)}
-`;
-
-export const SaveButton = styled(EditorButton)`
+export const ClearFiltersButton = styled(EditorButton)`
     ${ButtonColors(COLORS.YELLOW)}
 `;
 
-export const DeleteButton = styled(EditorButton)`
-    ${ButtonColors(COLORS.NEUTRAL_GRAY)}
+export const ApplyFiltersButton = styled(EditorButton)`
+    ${ButtonColors(COLORS.GREEN)}
 `;
 
-export { Input, Select } from '@/styles/input';
+export const FilterInput = styled(Input)`
+    width: 50%;
+    margin: 0 5px;
+`;

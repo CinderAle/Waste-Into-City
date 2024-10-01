@@ -4,9 +4,10 @@ import { Container, TrashcanType } from './styles';
 
 type Props = {
     onSelect: (trashcanType: TrashcanTypes) => void;
+    selection?: Set<TrashcanTypes>;
 };
 
-const TypeSelect = ({ onSelect }: Props) => {
+const TypeSelect = ({ onSelect, selection }: Props) => {
     const handleClick = (trashcanType: TrashcanTypes) => {
         onSelect(trashcanType);
     };
@@ -20,6 +21,7 @@ const TypeSelect = ({ onSelect }: Props) => {
                         key={index}
                         onClick={() => handleClick(TrashcanTypes[trashcanType as keyof typeof TrashcanTypes])}
                         icon={trashcanType}
+                        defaultSelected={selection?.has(TrashcanTypes[trashcanType as keyof typeof TrashcanTypes])}
                     >
                         {trashcanType}
                     </TrashcanType>

@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
 
@@ -11,6 +11,7 @@ type ContainerProps = {
 type TypedContainerProps = ContainerProps & {
     onClick?: () => void;
     icon?: string;
+    defaultSelected?: boolean;
 };
 
 const SelectContainer = styled.div`
@@ -74,23 +75,16 @@ export const Container = ({ children }: ContainerProps) => {
     );
 };
 
-export const TrashcanType = ({ children, onClick, icon }: TypedContainerProps) => {
-    const [isSelected, setSelected] = useState(false);
-
-    const handleClick = () => {
-        setSelected(!isSelected);
-        onClick?.call(null);
-    };
-
+export const TrashcanType = ({ children, onClick, icon, defaultSelected }: TypedContainerProps) => {
     return (
-        <TrashcanTypeContainer onClick={handleClick}>
+        <TrashcanTypeContainer onClick={onClick}>
             <TrashcanTypeIcon>
                 <ReactSVG
                     src={`src/assets/icons/svg/trashcanTypes/${icon?.toLowerCase()}.svg`}
                     style={{ width: '40px', height: '40px' }}
                 />
             </TrashcanTypeIcon>
-            <TrashcanTypeText $isSelected={isSelected}>{children}</TrashcanTypeText>
+            <TrashcanTypeText $isSelected={defaultSelected ?? false}>{children}</TrashcanTypeText>
         </TrashcanTypeContainer>
     );
 };

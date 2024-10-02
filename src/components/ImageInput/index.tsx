@@ -8,17 +8,19 @@ type Props = {
 };
 
 const ImageInput = ({ value, onChange }: Props) => {
-    const [image, setImage] = useState<string>(value ?? '');
+    const [preview, setPreview] = useState<string>(value ?? '');
 
     const handleChange = (changeEvent: ChangeEvent<HTMLInputElement>) => {
-        if (changeEvent.target.files !== null) setImage(URL.createObjectURL(changeEvent.target.files[0]));
+        if (changeEvent.target.files !== null) {
+            setPreview(URL.createObjectURL(changeEvent.target.files[0]));
+        }
         onChange?.(changeEvent);
     };
 
     return (
         <InputContainer>
-            <ImagePreview src={image} />
-            <UploadButton onChange={handleChange} value={value} />
+            <ImagePreview src={preview} />
+            <UploadButton onChange={handleChange} />
         </InputContainer>
     );
 };

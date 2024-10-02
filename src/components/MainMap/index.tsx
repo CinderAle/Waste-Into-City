@@ -2,6 +2,7 @@ import { YMap as YmapComponent, YMapLocationRequest } from '@yandex/ymaps3-types
 import { useEffect, useRef } from 'react';
 import { YMap, YMapDefaultFeaturesLayer, YMapDefaultSchemeLayer } from 'ymap3-components';
 
+import { getAllTrashcans } from '@/api/getAllTrashcans';
 import { useAction } from '@/hooks/useAction';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { Trashcan } from '@/types/trashcan';
@@ -35,6 +36,15 @@ const MainMap = () => {
             setCoordinates({ lng: center[0], lat: center[1] });
         }
     }, [isInEditingMode]);
+
+    useEffect(() => {
+        getAllTrashcans()
+            .then((allTrashcans) => {
+                console.log(allTrashcans);
+                allTrashcans.forEach((e) => console.log(e.id));
+            })
+            .catch((err) => console.log(err.message));
+    });
 
     return (
         <MapContainer>

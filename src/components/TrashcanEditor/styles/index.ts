@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { COLORS } from '@/constants/colors';
 
-export const EditorContainer = styled.div`
+export const EditorContainer = styled.form`
     width: 100%;
     height: 100%;
     display: flex;

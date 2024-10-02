@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 import { useAction } from '@/hooks/useAction';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
@@ -19,6 +19,10 @@ import {
     TypingFields,
     UpperControls,
 } from './styles';
+
+const FORM_ENC_TYPE = 'multipart/form-data';
+const BUTTON_SUBMIT_TYPE = 'submit';
+const COMMON_BUTTON_TYPE = 'button';
 
 const TrashcanEditor = () => {
     const [isShowingTypes, setShowingTypes] = useState(false);
@@ -68,12 +72,17 @@ const TrashcanEditor = () => {
         console.log('delete');
     };
 
-    const handleSaveButtonClick = () => {
+    const handleSubmit = (event: FormEvent) => {
         console.log('save');
+        event.preventDefault();
+
+        if (!trashcan) {
+            //createTrashcan(new Trashcan('', markerCoordinates, selectedType, volume, fill))
+        }
     };
 
     return (
-        <EditorContainer>
+        <EditorContainer encType={FORM_ENC_TYPE} onSubmit={handleSubmit}>
             <UpperControls>
                 <ObligatoryFields>
                     <ImageInput />
@@ -86,11 +95,15 @@ const TrashcanEditor = () => {
                 {isShowingTypes && <TypeSelect onSelect={handleSelect} />}
             </UpperControls>
             <ButtonsArea>
-                <SetLocationButton onClick={handleSetLocationClick}>
+                <SetLocationButton onClick={handleSetLocationClick} type={COMMON_BUTTON_TYPE}>
                     {isEditing ? 'Set Location' : 'Update Location'}
                 </SetLocationButton>
-                {trashcan && <DeleteButton onClick={handleDeleteButtonClick}>Delete</DeleteButton>}
-                <SaveButton onClick={handleSaveButtonClick}>Save changes</SaveButton>
+                {trashcan && (
+                    <DeleteButton onClick={handleDeleteButtonClick} type={COMMON_BUTTON_TYPE}>
+                        Delete
+                    </DeleteButton>
+                )}
+                <SaveButton type={BUTTON_SUBMIT_TYPE}>Save changes</SaveButton>
             </ButtonsArea>
         </EditorContainer>
     );

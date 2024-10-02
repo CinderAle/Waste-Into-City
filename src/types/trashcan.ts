@@ -11,10 +11,10 @@ export class Trashcan {
     private _image: string;
 
     constructor(
-        id: string,
-        coordinates: Coordinates,
-        type: TrashcanTypes,
-        volume: number,
+        id: string = '',
+        coordinates: Coordinates = { lat: 0, lng: 0 },
+        type: TrashcanTypes = TrashcanTypes.Common,
+        volume: number = 0,
         fill: number = 0,
         image: string = ''
     ) {

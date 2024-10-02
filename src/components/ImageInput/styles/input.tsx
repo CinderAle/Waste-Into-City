@@ -27,7 +27,7 @@ const UploadSymbol = styled.p`
     font-weight: bold;
 `;
 
-export const UploadButton = ({ onChange }: InputProps) => {
+export const UploadButton = ({ onChange, value }: InputProps) => {
     const inputRef = useRef<HTMLInputElement>(null!);
 
     const handleClick = () => {
@@ -37,7 +37,7 @@ export const UploadButton = ({ onChange }: InputProps) => {
     return (
         <Wrapper onClick={handleClick}>
             <UploadSymbol>+</UploadSymbol>
-            <input ref={inputRef} type="file" onChange={onChange} hidden />
+            <input ref={inputRef} type="file" onChange={onChange} value={value} hidden />
         </Wrapper>
     );
 };

@@ -36,6 +36,6 @@ const SliderInput = styled.input<{ $value: number }>`
     }
 `;
 
-export const Slider = ({ onChange, value }: InputProps) => {
-    return <SliderInput type="range" onChange={onChange} $value={Number(value)} value={value} />;
+export const Slider = ({ onChange, value, name }: InputProps) => {
+    return <SliderInput type="range" onChange={onChange} $value={Number(value)} value={value} name={name} />;
 };

@@ -53,16 +53,16 @@ const SelectField = styled(InputField)`
     cursor: pointer;
 `;
 
-export const Input = ({ label, value, onClick, onChange, readOnly, className }: InputProps) => {
+export const Input = ({ label, value, onClick, onChange, readOnly, className, name }: InputProps) => {
     return (
         <InputWrapper className={className}>
             <InputLabel>{label}</InputLabel>
-            <InputField value={value} onClick={onClick} onChange={onChange} readOnly={readOnly} />
+            <InputField value={value} onClick={onClick} onChange={onChange} readOnly={readOnly} name={name} />
         </InputWrapper>
     );
 };
 
-export const Select = ({ label, value, onClick, onChange, readOnly }: InputProps) => {
+export const Select = ({ label, value, onClick, onChange, readOnly, name }: InputProps) => {
     const [isOpen, setOpen] = useState(false);
 
     const handleClick = () => {
@@ -78,7 +78,7 @@ export const Select = ({ label, value, onClick, onChange, readOnly }: InputProps
             <SelectIcon $rotated={isOpen}>
                 <ReactSVG src={arrowIcon} />
             </SelectIcon>
-            <SelectField value={value} onChange={onChange} readOnly={readOnly} />
+            <SelectField value={value} onChange={onChange} readOnly={readOnly} name={name} />
         </SelectWrapper>
     );
 };

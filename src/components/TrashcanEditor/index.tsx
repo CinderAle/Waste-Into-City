@@ -1,5 +1,6 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
+import { createTrashcan } from '@/api/createTrashcan';
 import { useAction } from '@/hooks/useAction';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { TrashcanTypes } from '@/types/trashcanTypes';
@@ -31,6 +32,7 @@ const TrashcanEditor = () => {
     const [selectedType, setSelectedType] = useState(TrashcanTypes.Common);
     const [volume, setVolume] = useState(0);
     const [fill, setFill] = useState('0');
+    const [image, setImage] = useState<File>();
 
     useEffect(() => {
         if (trashcan) {
@@ -41,7 +43,7 @@ const TrashcanEditor = () => {
     }, [trashcan]);
 
     const { startCoordinatesEditing, stopCoordinatesEditing } = useAction();
-    const { isInEditingMode: isEditing } = useTypedSelector((state) => state.mapClick);
+    const { isInEditingMode: isEditing, coordinates: coordinates } = useTypedSelector((state) => state.mapClick);
 
     const handleSelect = (trashcanType: TrashcanTypes) => {
         setSelectedType(trashcanType);
@@ -72,12 +74,26 @@ const TrashcanEditor = () => {
         console.log('delete');
     };
 
-    const handleSubmit = (event: FormEvent) => {
-        console.log('save');
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        formData.set('volume', String(volume));
+        formData.set('fill', fill);
+        formData.set('type', TrashcanTypes.Common);
+        formData.set(`coordinates.lat`, String(coordinates.lat));
+        formData.set(`coordinates.lng`, String(coordinates.lng));
+        if (image) formData.set('image', image);
 
         if (!trashcan) {
-            //createTrashcan(new Trashcan('', markerCoordinates, selectedType, volume, fill))
+            createTrashcan(formData);
+        }
+    };
+
+    const handleImageChange = (changeEvent: ChangeEvent<HTMLInputElement>) => {
+        if (changeEvent.target.files) {
+            setImage(changeEvent.target.files[0]);
+        } else {
+            //formData.set('image', image ?? '');
         }
     };
 
@@ -85,11 +101,11 @@ const TrashcanEditor = () => {
         <EditorContainer encType={FORM_ENC_TYPE} onSubmit={handleSubmit}>
             <UpperControls>
                 <ObligatoryFields>
-                    <ImageInput />
+                    <ImageInput value={trashcan?.image} onChange={handleImageChange} />
                     <TypingFields>
-                        <FillSlider value={fill} onChange={handleFillChange} />
-                        <Input label="Volume" value={String(volume)} onChange={handleVolumeChange} />
-                        <Select label="Type" onClick={handleClick} readOnly value={selectedType} />
+                        <FillSlider value={fill} onChange={handleFillChange} name="fill" />
+                        <Input label="Volume" value={String(volume)} onChange={handleVolumeChange} name="volume" />
+                        <Select label="Type" onClick={handleClick} readOnly value={selectedType} name="type" />
                     </TypingFields>
                 </ObligatoryFields>
                 {isShowingTypes && <TypeSelect onSelect={handleSelect} />}

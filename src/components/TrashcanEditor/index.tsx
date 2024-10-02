@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 import { createTrashcan } from '@/api/createTrashcan';
+import { deleteTrashcan } from '@/api/deleteTrashcan';
 import { useAction } from '@/hooks/useAction';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { TrashcanTypes } from '@/types/trashcanTypes';
@@ -28,6 +29,7 @@ const COMMON_BUTTON_TYPE = 'button';
 const TrashcanEditor = () => {
     const [isShowingTypes, setShowingTypes] = useState(false);
     const trashcan = useTypedSelector((state) => state.menuSection.trashcan);
+    const { hideSection } = useAction();
 
     const [selectedType, setSelectedType] = useState(TrashcanTypes.Common);
     const [volume, setVolume] = useState(0);
@@ -71,7 +73,8 @@ const TrashcanEditor = () => {
     };
 
     const handleDeleteButtonClick = () => {
-        console.log('delete');
+        if (trashcan) deleteTrashcan(trashcan);
+        hideSection();
     };
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -79,7 +82,7 @@ const TrashcanEditor = () => {
         const formData = new FormData(event.currentTarget);
         formData.set('volume', String(volume));
         formData.set('fill', fill);
-        formData.set('type', TrashcanTypes.Common);
+        formData.set('type', selectedType);
         formData.set(`coordinates.lat`, String(coordinates.lat));
         formData.set(`coordinates.lng`, String(coordinates.lng));
         if (image) formData.set('image', image);

@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import { ImagePreview, InputContainer, UploadButton } from './styles';
 
@@ -9,6 +9,9 @@ type Props = {
 
 const ImageInput = ({ value, onChange }: Props) => {
     const [preview, setPreview] = useState<string>(value ?? '');
+    useEffect(() => {
+        setPreview(value ?? '');
+    }, [value]);
 
     const handleChange = (changeEvent: ChangeEvent<HTMLInputElement>) => {
         if (changeEvent.target.files !== null) {

@@ -1,9 +1,14 @@
+import axios from 'axios';
+
 import { API } from '@/constants/api';
 
-export const createTrashcan = async (trashcan: FormData) => {
-    const response = await fetch(API.BACKEND_OPERATIONS_URI, {
-        method: API.POST_METHOD,
-        body: trashcan,
-    });
-    return response.ok;
+import { fetchAuthorized } from './fetchAuthorized';
+
+export const createTrashcan = async (trashcan: FormData): Promise<boolean> => {
+    try {
+        await fetchAuthorized<FormData, boolean>(API.BACKEND_OPERATIONS_URI, axios.post, trashcan);
+        return true;
+    } catch {
+        return false;
+    }
 };

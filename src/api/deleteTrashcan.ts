@@ -1,13 +1,15 @@
+import axios from 'axios';
+
 import { API } from '@/constants/api';
-import { ApiRequestError } from '@/errors/apiRequestError';
 import { Trashcan } from '@/types/trashcan';
 
+import { fetchAuthorized } from './fetchAuthorized';
+
 export const deleteTrashcan = async (trashcan: Trashcan) => {
-    const response = await fetch(`${API.BACKEND_OPERATIONS_URI}/${trashcan.id}`, {
-        method: API.DELETE_METHOD,
-    });
-    if (response.ok) {
+    try {
+        await fetchAuthorized(`${API.BACKEND_OPERATIONS_URI}/${trashcan.id}`, axios.delete, {});
         return true;
+    } catch {
+        return false;
     }
-    throw new ApiRequestError();
 };

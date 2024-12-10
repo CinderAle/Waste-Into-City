@@ -2,6 +2,7 @@ import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
 
 import filterIcon from '@/assets/icons/svg/filterIcon.svg';
+import signInIcon from '@/assets/icons/svg/signInIcon.svg';
 import { COLORS } from '@/constants/colors';
 import { ButtonProps } from '@/types/buttonProps';
 
@@ -94,5 +95,41 @@ export const FilterButton = ({ onClick }: ButtonProps) => {
                 <ReactSVG src={filterIcon} style={{ height: '40px' }} />
             </StyledFilterIcon>
         </StyledFilterButton>
+    );
+};
+
+const StyledSignIcon = styled.div`
+    width: 100%;
+    height: 40px;
+    fill: ${COLORS.WHITE};
+    transition: 0.1s linear;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    @media (hover: hover) {
+        &:hover {
+            fill: ${COLORS.NEUTRAL_GRAY};
+        }
+    }
+    @media (hover: none) {
+        &:active {
+            fill: ${COLORS.NEUTRAL_GRAY};
+        }
+    }
+`;
+
+const StyledSignButton = styled(SidebarButton)`
+    background-color: ${COLORS.NEUTRAL_GRAY};
+    border-color: ${COLORS.NEUTRAL_GRAY};
+`;
+
+export const SignButton = (props: ButtonProps) => {
+    return (
+        <StyledSignButton {...props}>
+            <StyledSignIcon>
+                <ReactSVG src={signInIcon} style={{ height: '40px' }} />
+            </StyledSignIcon>
+        </StyledSignButton>
     );
 };

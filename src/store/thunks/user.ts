@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { signIn } from '@/api/signIn';
+import { signOut } from '@/api/signOut';
 import { UserRoles } from '@/types/userRoles';
 
 export const signIntoUserAccount = createAsyncThunk(
@@ -10,3 +11,8 @@ export const signIntoUserAccount = createAsyncThunk(
         return user.role !== UserRoles.Guest ? user : rejectWithValue(user);
     }
 );
+
+export const signOutUserAccount = createAsyncThunk('user/signOut', async (_, { rejectWithValue }) => {
+    const isSuccessful = await signOut();
+    return isSuccessful || rejectWithValue(isSuccessful);
+});

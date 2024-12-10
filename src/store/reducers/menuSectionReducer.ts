@@ -15,6 +15,8 @@ export const menuSectionReducer = (
         case MenuSections.AddTrashcanSection:
         case MenuSections.FilterTrashcansSection:
         case MenuSections.TrashcanInfoSection:
+        case MenuSections.SignInSection:
+        case MenuSections.SignUpSection:
             return { ...state, section: action.payload.component };
         case MenuSections.UpdateTrashcanSection:
             return { ...state, section: action.payload.component, trashcan: action.payload.props };

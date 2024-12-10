@@ -5,6 +5,7 @@ import { deleteTrashcan } from '@/api/deleteTrashcan';
 import { useAction } from '@/hooks/useAction';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { TrashcanTypes } from '@/types/trashcanTypes';
+import { UserRoles } from '@/types/userRoles';
 
 import FillSlider from '../FillSlider';
 import ImageInput from '../ImageInput';
@@ -28,6 +29,7 @@ const COMMON_BUTTON_TYPE = 'button';
 
 const TrashcanEditor = () => {
     const [isShowingTypes, setShowingTypes] = useState(false);
+    const userRole = useTypedSelector((state) => state.user.role);
     const trashcan = useTypedSelector((state) => state.menuSection.trashcan);
     const { hideSection } = useAction();
 
@@ -114,10 +116,12 @@ const TrashcanEditor = () => {
                 {isShowingTypes && <TypeSelect onSelect={handleSelect} />}
             </UpperControls>
             <ButtonsArea>
-                <SetLocationButton onClick={handleSetLocationClick} type={COMMON_BUTTON_TYPE}>
-                    {isEditing ? 'Set Location' : 'Update Location'}
-                </SetLocationButton>
-                {trashcan && (
+                {userRole === UserRoles.Admin && (
+                    <SetLocationButton onClick={handleSetLocationClick} type={COMMON_BUTTON_TYPE}>
+                        {isEditing ? 'Set Location' : 'Update Location'}
+                    </SetLocationButton>
+                )}
+                {trashcan && userRole === UserRoles.Admin && (
                     <DeleteButton onClick={handleDeleteButtonClick} type={COMMON_BUTTON_TYPE}>
                         Delete
                     </DeleteButton>

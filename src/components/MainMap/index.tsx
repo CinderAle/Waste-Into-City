@@ -37,7 +37,7 @@ const MainMap = () => {
                 setTrashcans(allTrashcans);
             })
             .catch((err) => console.log(err.message));
-    });
+    }, []);
 
     return (
         <MapContainer>

@@ -1,10 +1,12 @@
 import { useAction } from '@/hooks/useAction';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
+import { UserRoles } from '@/types/userRoles';
 
-import { AddButton, FilterButton, SidebarContainer } from './styles';
+import { AddButton, FilterButton, SidebarContainer, SignButton } from './styles';
 
 const Sidebar = () => {
-    const { addTrashcan, specifyFilters } = useAction();
-
+    const { addTrashcan, specifyFilters, followSignIn, signOutUserAccount } = useAction();
+    const userRole = useTypedSelector((state) => state.user.role);
     const handleAddButtonClick = () => {
         addTrashcan();
     };
@@ -13,10 +15,23 @@ const Sidebar = () => {
         specifyFilters();
     };
 
+    const handleSignInButtonClick = () => {
+        followSignIn();
+    };
+
+    const handleSignOutClick = () => {
+        signOutUserAccount();
+    };
+
     return (
         <SidebarContainer>
-            <AddButton onClick={handleAddButtonClick} />
+            {userRole === UserRoles.Admin && <AddButton onClick={handleAddButtonClick} />}
             <FilterButton onClick={handleFilterButtonClick} />
+            {userRole === UserRoles.Guest ? (
+                <SignButton onClick={handleSignInButtonClick} />
+            ) : (
+                <SignButton onClick={handleSignOutClick} />
+            )}
         </SidebarContainer>
     );
 };

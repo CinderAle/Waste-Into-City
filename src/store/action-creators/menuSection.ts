@@ -1,6 +1,8 @@
 import { Dispatch } from 'redux';
 
 import FilterSection from '@/components/FilterSection';
+import { SignInSection } from '@/components/SignInSection';
+import { SignUpSection } from '@/components/SignUpSection';
 import TrashcanEditor from '@/components/TrashcanEditor';
 import { MenuSectionAction, MenuSections } from '@/types/menuSection';
 import { Trashcan } from '@/types/trashcan';
@@ -26,5 +28,17 @@ export const specifyFilters = () => {
 export const hideSection = () => {
     return async (dispatch: Dispatch<MenuSectionAction>) => {
         dispatch({ type: MenuSections.NoSection });
+    };
+};
+
+export const followSignIn = () => {
+    return async (dispatch: Dispatch<MenuSectionAction>) => {
+        dispatch({ type: MenuSections.SignInSection, payload: { component: SignInSection } });
+    };
+};
+
+export const followSignUp = () => {
+    return async (dispatch: Dispatch<MenuSectionAction>) => {
+        dispatch({ type: MenuSections.SignUpSection, payload: { component: SignUpSection } });
     };
 };

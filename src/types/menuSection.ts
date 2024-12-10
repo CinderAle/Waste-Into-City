@@ -5,6 +5,8 @@ export enum MenuSections {
     UpdateTrashcanSection = 'UpdateTrashcanSection',
     FilterTrashcansSection = 'FilterTrashcansSection',
     TrashcanInfoSection = 'TrashcanInfoSection',
+    SignInSection = 'SignInSection',
+    SignUpSection = 'SignUpSection',
     NoSection = 'NoSection',
 }
 
@@ -35,8 +37,25 @@ type ShowTrashcanInfo = {
     payload: MenuSectionActionPayload;
 };
 
+type SignInSection = {
+    type: MenuSections.SignInSection;
+    payload: MenuSectionActionPayload;
+};
+
+type SignUpSection = {
+    type: MenuSections.SignUpSection;
+    payload: MenuSectionActionPayload;
+};
+
 type HideSection = {
     type: MenuSections.NoSection;
 };
 
-export type MenuSectionAction = AddTrashcan | UpdateTrashcan | FilterTrashcans | ShowTrashcanInfo | HideSection;
+export type MenuSectionAction =
+    | AddTrashcan
+    | UpdateTrashcan
+    | FilterTrashcans
+    | ShowTrashcanInfo
+    | HideSection
+    | SignInSection
+    | SignUpSection;

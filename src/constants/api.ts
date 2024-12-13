@@ -3,7 +3,7 @@ export const API = {
     YMAPS_LANG: 'ru_RU',
 
     BACKEND_URI: import.meta.env.VITE_BACKEND_API_URI,
-    BACKEND_OPERATIONS_URI: `${import.meta.env.VITE_BACKEND_API_URI}/api/trashcan`,
+    BACKEND_OPERATIONS_URI: `${import.meta.env.VITE_BACKEND_API_URI}`,
 
     SIGN_UP_URI: `${import.meta.env.VITE_AUTH_URI}/signup`,
     AUTH_URI: `${import.meta.env.VITE_AUTH_URI}`,

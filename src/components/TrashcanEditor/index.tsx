@@ -90,7 +90,7 @@ const TrashcanEditor = () => {
         if (image) formData.set('image', image);
 
         if (!trashcan) {
-            createTrashcan(formData);
+            createTrashcan({ volume, fill: Number(fill), coordinates, type: selectedType }, image);
         }
     };
 

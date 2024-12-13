@@ -1,0 +1,39 @@
+import { useEffect, useState } from 'react';
+
+import { connectionSocket } from '@/api/connectionSocket';
+import { SOCKET_MESSAGES } from '@/constants/socketMessages';
+import { Trashcan } from '@/types/trashcan';
+
+type Response = any & {
+    _id: string;
+};
+
+const castToTrashcan = (response: Response): Trashcan => {
+    return { ...response, id: response._id };
+};
+
+export const useConnectionSocket = () => {
+    const [trashcans, setTrashcans] = useState<Trashcan[]>([]);
+
+    useEffect(() => {
+        connectionSocket.connect();
+        connectionSocket.on(SOCKET_MESSAGES.ADDED_TRASHCAN, (response: Response) => {
+            setTrashcans((trashcans) => [...trashcans, castToTrashcan(response)]);
+        });
+
+        connectionSocket.on(SOCKET_MESSAGES.REMOVED_TRASHCAN, (response: Response) => {
+            const { id } = castToTrashcan(response);
+            setTrashcans((trashcans) => trashcans.filter((e) => e.id !== id));
+        });
+
+        connectionSocket.on(SOCKET_MESSAGES.MODIFIED_TRASHCAN, (response: Response) => {
+            const trashcan = castToTrashcan(response);
+            setTrashcans((trashcans) => trashcans.map((e) => (e.id === trashcan.id ? trashcan : e)));
+        });
+        return () => {
+            connectionSocket.disconnect();
+        };
+    }, []);
+
+    return [trashcans, setTrashcans];
+};

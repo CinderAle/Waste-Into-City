@@ -1,57 +1,33 @@
-import axios from 'axios';
-import { io, Socket } from 'socket.io-client';
-
-import { API } from '@/constants/api';
 import { SOCKET_MESSAGES } from '@/constants/socketMessages';
 import { ApiRequestError } from '@/errors/apiRequestError';
 
-axios.defaults.withCredentials = true;
+import { connectionSocket } from './connectionSocket';
+import { refreshTokens } from './refreshTokens';
 
-// export const fetchAuthorized = async <T, K>(
-//     uri: string,
-//     request: (uri: string, data: T) => Promise<K>,
-//     param: T
-// ): Promise<K> => {
-//     try {
-//         const result: K = await request(uri, param);
-//         return result;
-//     } catch {
-//         try {
-//             await axios.put(API.AUTH_URI);
-//             const result = await request(uri, { ...param });
-//             return result;
-//         } catch {
-//             throw new ApiRequestError();
-//         }
-//     }
-// };
-
-export const fetchAuthorized = async <T, K>(uri: string, message: string, ...data: T[]): Promise<K> => {
-    const socket: Socket = io(uri, {
-        withCredentials: true,
-    });
+export const fetchAuthorized = async <T, K>(message: string, ...data: T[]): Promise<K> => {
     try {
-        socket.emit(message, ...data);
-        const result: K = await new Promise((resolve, reject) => {
-            socket.on(SOCKET_MESSAGES.SUCCESS, (response: K) => resolve(response));
-            socket.on(SOCKET_MESSAGES.AUTH_ERROR, (errorMessage: string) => reject(errorMessage));
-            socket.on(SOCKET_MESSAGES.ERROR, (errorMessage: string) => reject(errorMessage));
+        connectionSocket.emit(message, ...data);
+        const result: K = await new Promise((_, reject) => {
+            connectionSocket.off(SOCKET_MESSAGES.AUTH_ERROR);
+            connectionSocket.on(SOCKET_MESSAGES.AUTH_ERROR, (errorMessage: string) => reject(errorMessage));
         });
         return result;
-    } catch {
+    } catch (e: unknown) {
+        console.log((e as Error).message);
         try {
-            socket.disconnect();
-            await axios.put(API.AUTH_URI);
-            socket.connect();
-            socket.emit(message, ...data);
-            const result: K = await new Promise((resolve, reject) => {
-                socket.on(SOCKET_MESSAGES.SUCCESS, (response: K) => resolve(response));
-                socket.on(SOCKET_MESSAGES.AUTH_ERROR, (errorMessage: string) => reject(errorMessage));
-                socket.on(SOCKET_MESSAGES.ERROR, (errorMessage: string) => reject(errorMessage));
+            connectionSocket.disconnect();
+            await refreshTokens();
+            connectionSocket.connect();
+            connectionSocket.emit(message, ...data);
+            const result: K = await new Promise((_, reject) => {
+                connectionSocket.off(SOCKET_MESSAGES.AUTH_ERROR);
+                connectionSocket.on(SOCKET_MESSAGES.AUTH_ERROR, (errorMessage: string) => reject(errorMessage));
             });
             return result;
         } catch {
             throw new ApiRequestError();
         }
+    } finally {
+        connectionSocket.off(SOCKET_MESSAGES.AUTH_ERROR);
     }
 };

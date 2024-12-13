@@ -1,18 +1,31 @@
-import axios from 'axios';
+import { gql } from '@apollo/client';
 
-import { API } from '@/constants/api';
 import { User } from '@/types/user';
 import { UserRoles } from '@/types/userRoles';
 import { hashSHA256 } from '@/utils/hashSHA256';
 
+import { apolloClient } from './apolloClient';
+import { connectionSocket } from './connectionSocket';
+
+const signInMutation = gql`
+    mutation getUser($input: UserInput!) {
+        getUser(input: $input) {
+            login
+            role
+        }
+    }
+`;
+
 export const signIn = async (login: string, password: string): Promise<User> => {
     try {
         const passwordHash = await hashSHA256(password);
-        const userResponse = await axios.post<User>(API.AUTH_URI, {
-            login,
-            password: passwordHash,
+        connectionSocket.disconnect();
+        const userResponse = await apolloClient.mutate({
+            mutation: signInMutation,
+            variables: { input: { login, password: passwordHash } },
         });
-        return userResponse.data;
+        connectionSocket.connect();
+        return userResponse.data.getUser;
     } catch {
         return {
             login: '',

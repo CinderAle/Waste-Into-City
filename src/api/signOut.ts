@@ -1,10 +1,16 @@
-import axios from 'axios';
+import { gql } from '@apollo/client';
 
-import { API } from '@/constants/api';
+import { apolloClient } from './apolloClient';
+
+const signInQuery = gql`
+    query {
+        logOut
+    }
+`;
 
 export const signOut = async (): Promise<boolean> => {
     try {
-        await axios.delete(API.AUTH_URI);
+        await apolloClient.query({ query: signInQuery });
         return true;
     } catch {
         return false;

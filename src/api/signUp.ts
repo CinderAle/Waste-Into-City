@@ -1,14 +1,21 @@
-import axios from 'axios';
+import { gql } from '@apollo/client';
 
-import { API } from '@/constants/api';
 import { hashSHA256 } from '@/utils/hashSHA256';
+
+import { apolloClient } from './apolloClient';
+
+const signUpMutation = gql`
+    mutation createUser($input: UserInput) {
+        createUser(input: $input)
+    }
+`;
 
 export const signUp = async (login: string, password: string): Promise<boolean> => {
     try {
         const passwordHash = await hashSHA256(password);
-        await axios.post(API.SIGN_UP_URI, {
-            login,
-            password: passwordHash,
+        await apolloClient.mutate({
+            mutation: signUpMutation,
+            variables: { input: { login, password: passwordHash } },
         });
         return true;
     } catch {

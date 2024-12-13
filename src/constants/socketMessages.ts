@@ -13,6 +13,7 @@ export const SOCKET_MESSAGES = {
     ADDED_TRASHCAN: 'added-trashcan',
     MODIFIED_TRASHCAN: 'modified-trashcan',
     REMOVED_TRASHCAN: 'removed-trashcan',
+    LIST_TRASHCANS: 'list-trashcans',
 
     // Util
     ERROR: 'error',

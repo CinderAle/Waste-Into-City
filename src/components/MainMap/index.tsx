@@ -1,11 +1,11 @@
 import { YMap as YmapComponent, YMapLocationRequest } from '@yandex/ymaps3-types';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { YMap, YMapDefaultFeaturesLayer, YMapDefaultSchemeLayer } from 'ymap3-components';
 
 import { getAllTrashcans } from '@/api/getAllTrashcans';
 import { useAction } from '@/hooks/useAction';
+import { useConnectionSocket } from '@/hooks/useConnectionSocket';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
-import { Trashcan } from '@/types/trashcan';
 
 import EditPositionMarker from '../EditPositionMarker';
 import TrashcanEditor from '../TrashcanEditor';
@@ -22,7 +22,7 @@ const MainMap = () => {
     const { setCoordinates } = useAction();
     const isInEditingMode = useTypedSelector((state) => state.mapClick.isInEditingMode);
     const { section: currentSection, trashcan } = useTypedSelector((state) => state.menuSection);
-    const [trashcans, setTrashcans] = useState<Trashcan[]>([]);
+    const [trashcans] = useConnectionSocket();
 
     useEffect(() => {
         if (!isInEditingMode && ymapRef.current && currentSection === TrashcanEditor) {
@@ -32,11 +32,7 @@ const MainMap = () => {
     }, [isInEditingMode]);
 
     useEffect(() => {
-        getAllTrashcans()
-            .then((allTrashcans) => {
-                setTrashcans(allTrashcans);
-            })
-            .catch((err) => console.log(err.message));
+        getAllTrashcans().catch((err) => console.log(err.message));
     }, []);
 
     return (

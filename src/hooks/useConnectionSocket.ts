@@ -12,7 +12,7 @@ const castToTrashcan = (response: Response): Trashcan => {
     return { ...response, id: response._id };
 };
 
-export const useConnectionSocket = () => {
+export const useConnectionSocket = (): [Trashcan[], (trashcans: Trashcan[]) => void] => {
     const [trashcans, setTrashcans] = useState<Trashcan[]>([]);
 
     useEffect(() => {
@@ -30,6 +30,11 @@ export const useConnectionSocket = () => {
             const trashcan = castToTrashcan(response);
             setTrashcans((trashcans) => trashcans.map((e) => (e.id === trashcan.id ? trashcan : e)));
         });
+
+        connectionSocket.on(SOCKET_MESSAGES.LIST_TRASHCANS, (responses: Response[]) => {
+            setTrashcans(responses.map((response) => castToTrashcan(response)));
+        });
+
         return () => {
             connectionSocket.disconnect();
         };

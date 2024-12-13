@@ -1,5 +1,5 @@
-import { API } from '@/constants/api';
 import { SOCKET_MESSAGES } from '@/constants/socketMessages';
+import { ApiRequestError } from '@/errors/apiRequestError';
 import { TrashcanTypes } from '@/types/trashcanTypes';
 
 import { fetchAuthorized } from './fetchAuthorized';
@@ -14,7 +14,7 @@ type TrashcanRequest = {
     };
 };
 
-export const createTrashcan = async (trashcan: TrashcanRequest, image: File | undefined): Promise<boolean> => {
+export const createTrashcan = async (trashcan: TrashcanRequest, image: File | undefined) => {
     try {
         const imageData: ArrayBuffer | undefined = await new Promise((resolve) => {
             const reader = new FileReader();
@@ -30,13 +30,11 @@ export const createTrashcan = async (trashcan: TrashcanRequest, image: File | un
             }
         });
         await fetchAuthorized<TrashcanRequest | ArrayBuffer | undefined, void>(
-            API.BACKEND_OPERATIONS_URI,
             SOCKET_MESSAGES.CREATE_TRASHCAN,
             trashcan,
             imageData
         );
-        return true;
     } catch {
-        return false;
+        throw new ApiRequestError();
     }
 };

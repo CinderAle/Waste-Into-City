@@ -33,10 +33,10 @@ export const PopupMessageBox = ({ className }: Props) => {
     return (
         isDisplayed && (
             <S.Container className={className}>
+                {isError ? <S.ErrorMessage>{message}</S.ErrorMessage> : <S.BaseMessage>{message}</S.BaseMessage>}
                 <S.CloseButton onClick={handleCloseButtonClick}>
                     <img src={closeIcon} />
                 </S.CloseButton>
-                {isError ? <S.ErrorMessage>{message}</S.ErrorMessage> : <S.BaseMessage>{message}</S.BaseMessage>}
             </S.Container>
         )
     );

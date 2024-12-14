@@ -2,6 +2,7 @@ import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 import { createTrashcan } from '@/api/createTrashcan';
 import { deleteTrashcan } from '@/api/deleteTrashcan';
+import { updateTrashcan } from '@/api/updateTrashcan';
 import { useAction } from '@/hooks/useAction';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { TrashcanTypes } from '@/types/trashcanTypes';
@@ -42,7 +43,7 @@ const TrashcanEditor = () => {
         if (trashcan) {
             setSelectedType(trashcan.type);
             setVolume(trashcan.volume);
-            setFill(String(trashcan.fill));
+            setFill(String(trashcan.fill * 100));
         } else {
             setSelectedType(TrashcanTypes.Common);
             setVolume(0);
@@ -51,7 +52,7 @@ const TrashcanEditor = () => {
     }, [trashcan]);
 
     const { startCoordinatesEditing, stopCoordinatesEditing } = useAction();
-    const { isInEditingMode: isEditing, coordinates: coordinates } = useTypedSelector((state) => state.mapClick);
+    const { isInEditingMode: isEditing, coordinates } = useTypedSelector((state) => state.mapClick);
 
     const handleSelect = (trashcanType: TrashcanTypes) => {
         setSelectedType(trashcanType);
@@ -85,24 +86,20 @@ const TrashcanEditor = () => {
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        formData.set('volume', String(volume));
-        formData.set('fill', fill);
-        formData.set('type', selectedType);
-        formData.set(`coordinates.lat`, String(coordinates.lat));
-        formData.set(`coordinates.lng`, String(coordinates.lng));
-        if (image) formData.set('image', image);
 
         if (!trashcan) {
-            createTrashcan({ volume, fill: Number(fill), coordinates, type: selectedType }, image);
+            createTrashcan({ volume, fill: Number(fill) / 100, coordinates, type: selectedType }, image);
+        } else {
+            updateTrashcan(
+                { id: trashcan.id, volume, fill: Number(fill) / 100, coordinates, type: selectedType },
+                image
+            );
         }
     };
 
     const handleImageChange = (changeEvent: ChangeEvent<HTMLInputElement>) => {
         if (changeEvent.target.files) {
             setImage(changeEvent.target.files[0]);
-        } else {
-            //formData.set('image', image ?? '');
         }
     };
 
@@ -132,6 +129,7 @@ const TrashcanEditor = () => {
                             value={selectedType}
                             name="type"
                             disabled={userRole !== UserRoles.Admin}
+                            isDropped={isShowingTypes}
                         />
                     </TypingFields>
                 </ObligatoryFields>

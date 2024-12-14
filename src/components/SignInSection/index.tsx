@@ -3,6 +3,8 @@ import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useAction } from '@/hooks/useAction';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 
+import * as S from './styled';
+
 type Credentials = {
     login: string;
     password: string;
@@ -11,7 +13,7 @@ type Credentials = {
 export const SignInSection = () => {
     const [credentials, setCredentials] = useState<Credentials>({ login: '', password: '' });
     const { followSignUp, signIntoUserAccount, popupErrorMessage, hideSection, popupBasicMessage } = useAction();
-    const { isError, login } = useTypedSelector((state) => state.user);
+    const { isError, login, isLoading } = useTypedSelector((state) => state.user);
 
     useEffect(() => {
         if (isError) {
@@ -36,16 +38,30 @@ export const SignInSection = () => {
     };
 
     return (
-        <form onSubmit={handleSignInAction}>
-            <input type="text" value={credentials.login} onChange={handleFieldChange('login')} />
-            <input type="password" value={credentials.password} onChange={handleFieldChange('password')} />
-            <button type="submit">Sign In</button>
-            <p>
+        <S.Form onSubmit={handleSignInAction}>
+            <S.SectionTitle>Sign In</S.SectionTitle>
+            <S.Credentials>
+                <S.CredentialField
+                    type="text"
+                    value={credentials.login}
+                    onChange={handleFieldChange('login')}
+                    label="Login"
+                />
+                <S.CredentialField
+                    type="password"
+                    value={credentials.password}
+                    onChange={handleFieldChange('password')}
+                    label="Password"
+                />
+            </S.Credentials>
+            <S.SubmitButton type="submit">Sign In</S.SubmitButton>
+            <S.SignUpLink>
                 No account yet?{' '}
                 <a href="#" onClick={handleSignUpFollow}>
                     Sign Up!
                 </a>
-            </p>
-        </form>
+            </S.SignUpLink>
+            {isLoading && <S.LoadingCircle />}
+        </S.Form>
     );
 };

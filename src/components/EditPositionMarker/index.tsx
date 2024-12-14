@@ -1,5 +1,6 @@
 import { YMapMarker } from 'ymap3-components';
 
+import locationIcon from '@/assets/icons/svg/location.svg';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import { Marker, MarkerContainer } from './styles';
@@ -10,11 +11,11 @@ const EditPositionMarker = () => {
 
     return isEditing ? (
         <MarkerContainer>
-            <Marker />
+            <Marker src={locationIcon} />
         </MarkerContainer>
     ) : (
         <YMapMarker coordinates={[location.lng, location.lat]}>
-            <Marker />
+            <Marker src={locationIcon} />
         </YMapMarker>
     );
 };

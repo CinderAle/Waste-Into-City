@@ -5,7 +5,7 @@ import { hashSHA256 } from '@/utils/hashSHA256';
 import { apolloClient } from './apolloClient';
 
 const signUpMutation = gql`
-    mutation createUser($input: UserInput) {
+    mutation createUser($input: UserInput!) {
         createUser(input: $input)
     }
 `;

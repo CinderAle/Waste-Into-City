@@ -13,10 +13,9 @@ export const MarkerContainer = styled.div`
     pointer-events: none;
 `;
 
-export const Marker = styled.div`
+export const Marker = styled.img`
     position: relative;
     width: 50px;
     height: 50px;
-    border-radius: 50%;
-    background-color: red;
+    filter: invert(35%) sepia(100%) saturate(1000%) hue-rotate(360deg);
 `;

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { ReactSVG } from 'react-svg';
 import styled from 'styled-components';
 
@@ -53,11 +52,12 @@ const SelectField = styled(InputField)`
     cursor: pointer;
 `;
 
-export const Input = ({ label, value, onClick, onChange, readOnly, className, name, disabled }: InputProps) => {
+export const Input = ({ type, label, value, onClick, onChange, readOnly, className, name, disabled }: InputProps) => {
     return (
         <InputWrapper className={className}>
             <InputLabel>{label}</InputLabel>
             <InputField
+                type={type}
                 value={value}
                 onClick={onClick}
                 onChange={onChange}
@@ -69,14 +69,24 @@ export const Input = ({ label, value, onClick, onChange, readOnly, className, na
     );
 };
 
-export const Select = ({ label, value, onClick, onChange, readOnly, name, disabled }: InputProps) => {
-    const [isOpen, setOpen] = useState(false);
+type SelectProps = {
+    isDropped: boolean;
+};
 
+export const Select = ({
+    label,
+    value,
+    onClick,
+    onChange,
+    readOnly,
+    name,
+    disabled,
+    isDropped,
+}: InputProps & SelectProps) => {
     const handleClick = () => {
         if (disabled) {
             return;
         }
-        setOpen(!isOpen);
         if (onClick) {
             onClick();
         }
@@ -85,7 +95,7 @@ export const Select = ({ label, value, onClick, onChange, readOnly, name, disabl
     return (
         <SelectWrapper onClick={handleClick}>
             <InputLabel>{label}</InputLabel>
-            <SelectIcon $rotated={isOpen}>
+            <SelectIcon $rotated={isDropped}>
                 <ReactSVG src={arrowIcon} />
             </SelectIcon>
             <SelectField value={value} onChange={onChange} readOnly={readOnly} name={name} disabled={disabled} />

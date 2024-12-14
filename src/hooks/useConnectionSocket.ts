@@ -16,7 +16,7 @@ const castToTrashcan = (response: Response): Trashcan => {
 
 export const useConnectionSocket = (): [Trashcan[], (trashcans: Trashcan[]) => void] => {
     const [trashcans, setTrashcans] = useState<Trashcan[]>([]);
-    const { popupBasicMessage } = useAction();
+    const { popupBasicMessage, popupErrorMessage } = useAction();
 
     useEffect(() => {
         connectionSocket.connect();
@@ -37,6 +37,10 @@ export const useConnectionSocket = (): [Trashcan[], (trashcans: Trashcan[]) => v
         connectionSocket.on(SOCKET_MESSAGES.LIST_TRASHCANS, (responses: Response[]) => {
             setTrashcans(responses.map((response) => castToTrashcan(response)));
             popupBasicMessage('All trashcans are listed!');
+        });
+
+        connectionSocket.on(SOCKET_MESSAGES.ERROR, (message: string) => {
+            popupErrorMessage(message);
         });
 
         return () => {

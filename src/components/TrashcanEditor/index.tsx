@@ -31,7 +31,7 @@ const TrashcanEditor = () => {
     const [isShowingTypes, setShowingTypes] = useState(false);
     const userRole = useTypedSelector((state) => state.user.role);
     const trashcan = useTypedSelector((state) => state.menuSection.trashcan);
-    const { hideSection } = useAction();
+    const { hideSection, clearSelectedTrashcan } = useAction();
 
     const [selectedType, setSelectedType] = useState(TrashcanTypes.Common);
     const [volume, setVolume] = useState(0);
@@ -44,6 +44,9 @@ const TrashcanEditor = () => {
             setVolume(trashcan.volume);
             setFill(String(trashcan.fill));
         }
+        return () => {
+            clearSelectedTrashcan();
+        };
     }, [trashcan]);
 
     const { startCoordinatesEditing, stopCoordinatesEditing } = useAction();

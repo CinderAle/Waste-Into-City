@@ -20,6 +20,8 @@ export const menuSectionReducer = (
             return { ...state, section: action.payload.component };
         case MenuSections.UpdateTrashcanSection:
             return { ...state, section: action.payload.component, trashcan: action.payload.props };
+        case MenuSections.ClearTrashcan:
+            return { ...state, trashcan: null };
         default:
             return state;
     }

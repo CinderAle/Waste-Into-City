@@ -8,6 +8,7 @@ export enum MenuSections {
     SignInSection = 'SignInSection',
     SignUpSection = 'SignUpSection',
     NoSection = 'NoSection',
+    ClearTrashcan = 'ClearTrashcan',
 }
 
 export type MenuSectionState = {
@@ -51,6 +52,10 @@ type HideSection = {
     type: MenuSections.NoSection;
 };
 
+type ClearTrashcan = {
+    type: MenuSections.ClearTrashcan;
+};
+
 export type MenuSectionAction =
     | AddTrashcan
     | UpdateTrashcan
@@ -58,4 +63,5 @@ export type MenuSectionAction =
     | ShowTrashcanInfo
     | HideSection
     | SignInSection
-    | SignUpSection;
+    | SignUpSection
+    | ClearTrashcan;

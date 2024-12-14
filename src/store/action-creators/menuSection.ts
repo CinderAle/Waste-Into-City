@@ -9,6 +9,7 @@ import { Trashcan } from '@/types/trashcan';
 
 export const addTrashcan = () => {
     return async (dispatch: Dispatch<MenuSectionAction>) => {
+        dispatch({ type: MenuSections.ClearTrashcan });
         dispatch({ type: MenuSections.AddTrashcanSection, payload: { component: TrashcanEditor } });
     };
 };
@@ -40,5 +41,11 @@ export const followSignIn = () => {
 export const followSignUp = () => {
     return async (dispatch: Dispatch<MenuSectionAction>) => {
         dispatch({ type: MenuSections.SignUpSection, payload: { component: SignUpSection } });
+    };
+};
+
+export const clearSelectedTrashcan = () => {
+    return async (dispatch: Dispatch<MenuSectionAction>) => {
+        dispatch({ type: MenuSections.ClearTrashcan });
     };
 };

@@ -1,84 +1,103 @@
 import { ChangeEvent, useState } from 'react';
 
+import { useAction } from '@/hooks/useAction';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
+import { TrashcanFilter } from '@/types/trashcanFilter';
 import { TrashcanTypes } from '@/types/trashcanTypes';
 
 import TypeSelect from '../TypeSelect';
-import {
-    ApplyFiltersButton,
-    ButtonsContainer,
-    ClearFiltersButton,
-    FieldsContainer,
-    FilterInput,
-    FiltersContainer,
-    InputPairContainer,
-} from './styled';
+import * as S from './styled';
+
+type FilterFields = {
+    types: Set<TrashcanTypes>;
+    minVolume: string;
+    maxVolume: string;
+    minFill: string;
+    maxFill: string;
+};
+
+const areAllNumeric = (...fields: string[]): boolean => {
+    return fields.filter((field) => !isNaN(Number(field))).length === fields.length;
+};
+
+const filterToFields = (filters: TrashcanFilter): FilterFields => {
+    return {
+        types: new Set(filters.type || []),
+        minVolume: String(filters.volume?.$gt || ''),
+        maxVolume: String(filters.volume?.$lt || ''),
+        minFill: String(filters.fill?.$gt || ''),
+        maxFill: String(filters.fill?.$lt || ''),
+    };
+};
 
 const FilterSection = () => {
-    const [minVolume, setMinVolume] = useState('');
-    const [maxVolume, setMaxVolume] = useState('');
-    const [minFill, setMinFill] = useState('');
-    const [maxFill, setMaxFill] = useState('');
-    const [selectedTypes, setSelectedTypes] = useState<Set<TrashcanTypes>>(new Set());
+    const trashcanFilter = useTypedSelector((state) => state.trashcanFilter);
+    const { setTrashcanFilter, clearTrashcanFilter } = useAction();
+    const [{ types, minVolume, maxVolume, minFill, maxFill }, setFilterFields] = useState<FilterFields>(
+        filterToFields(trashcanFilter)
+    );
+    const [error, setError] = useState('');
 
     const handleTypeSelect = (trashcanType: TrashcanTypes) => {
-        if (selectedTypes.has(trashcanType)) {
-            selectedTypes.delete(trashcanType);
+        if (types.has(trashcanType)) {
+            setFilterFields((fields) => {
+                fields.types.delete(trashcanType);
+                return { ...fields, types: new Set([...fields.types]) };
+            });
         } else {
-            selectedTypes.add(trashcanType);
+            setFilterFields((fields) => ({ ...fields, types: new Set([...fields.types, trashcanType]) }));
         }
-        setSelectedTypes(new Set(selectedTypes));
     };
 
-    const handleInputChange = (event: ChangeEvent<HTMLInputElement>, action: (value: string) => void) => {
-        action(event.currentTarget.value);
+    const handleInputChange = (property: keyof FilterFields) => (event: ChangeEvent<HTMLInputElement>) => {
+        setFilterFields((fields) => ({ ...fields, [property]: event.target.value }));
+        setError('');
     };
 
     const handleClearFilters = () => {
-        setMinVolume('');
-        setMaxVolume('');
-        setMinFill('');
-        setMaxFill('');
-        setSelectedTypes(new Set());
+        clearTrashcanFilter();
+        setError('');
     };
 
     const handleApplyFilters = () => {
-        console.log(minVolume, maxVolume, minFill, maxFill, selectedTypes);
+        if (areAllNumeric(minVolume, maxVolume, minFill, maxFill)) {
+            setTrashcanFilter({
+                type: [...types],
+                volume: { $gt: Number(minVolume), $lt: Number(maxVolume) },
+                fill: { $gt: Number(minFill), $lt: Number(maxFill) },
+            });
+        } else {
+            setError('All fields must be numeric!');
+        }
     };
 
     return (
-        <FiltersContainer>
-            <FieldsContainer>
-                <InputPairContainer>
-                    <FilterInput
-                        label="min volume l"
-                        value={minVolume}
-                        onChange={(e) => handleInputChange(e, setMinVolume)}
+        <S.FiltersContainer>
+            <S.FieldsContainer>
+                <S.InputPairContainer>
+                    <S.FilterInput
+                        label="Min volume, L"
+                        value={String(minVolume)}
+                        onChange={handleInputChange('minVolume')}
                     />
-                    <FilterInput
-                        label="max volume l"
-                        value={maxVolume}
-                        onChange={(e) => handleInputChange(e, setMaxVolume)}
+                    <S.FilterInput
+                        label="Max volume, L"
+                        value={String(maxVolume)}
+                        onChange={handleInputChange('maxVolume')}
                     />
-                </InputPairContainer>
-                <InputPairContainer>
-                    <FilterInput
-                        label="min fill %"
-                        value={minFill}
-                        onChange={(e) => handleInputChange(e, setMinFill)}
-                    />
-                    <FilterInput
-                        label="max fill %"
-                        value={maxFill}
-                        onChange={(e) => handleInputChange(e, setMaxFill)}
-                    />
-                </InputPairContainer>
-                <TypeSelect onSelect={handleTypeSelect} selection={selectedTypes} />
-            </FieldsContainer>
-            <ButtonsContainer>
-                <ClearFiltersButton onClick={handleClearFilters}>Clear all filters</ClearFiltersButton>
-                <ApplyFiltersButton onClick={handleApplyFilters}>Apply filters</ApplyFiltersButton>
-            </ButtonsContainer>
-        </FiltersContainer>
+                </S.InputPairContainer>
+                <S.InputPairContainer>
+                    <S.FilterInput label="Min fill, %" value={minFill} onChange={handleInputChange('minFill')} />
+                    <S.FilterInput label="Max fill, %" value={maxFill} onChange={handleInputChange('maxFill')} />
+                </S.InputPairContainer>
+                <p>{error}</p>
+                <TypeSelect onSelect={handleTypeSelect} selection={types} />
+            </S.FieldsContainer>
+            <S.ButtonsContainer>
+                <S.ClearFiltersButton onClick={handleClearFilters}>Clear all filters</S.ClearFiltersButton>
+                <S.ApplyFiltersButton onClick={handleApplyFilters}>Apply filters</S.ApplyFiltersButton>
+            </S.ButtonsContainer>
+        </S.FiltersContainer>
     );
 };
 

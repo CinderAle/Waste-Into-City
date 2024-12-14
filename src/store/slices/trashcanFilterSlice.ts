@@ -4,9 +4,13 @@ import { TrashcanFilter } from '@/types/trashcanFilter';
 
 import { clearTrashcanFilter, setTrashcanFilter } from '../thunks/trashcanFilter';
 
-type TrashcanFilterState = TrashcanFilter;
+type TrashcanFilterState = TrashcanFilter & {
+    error: boolean;
+};
 
-const initialState: TrashcanFilterState = {};
+const initialState: TrashcanFilterState = {
+    error: false,
+};
 
 export const trashcanFilterSlice = createSlice({
     name: 'trashcanFilter',
@@ -27,6 +31,7 @@ export const trashcanFilterSlice = createSlice({
             state.type = initialState.type;
             state.volume = initialState.volume;
             state.fill = initialState.fill;
+            state.error = initialState.error;
         },
     },
     extraReducers: (builder) => {
@@ -38,10 +43,14 @@ export const trashcanFilterSlice = createSlice({
                 state.fill = fill;
             }
         );
+        builder.addCase(setTrashcanFilter.rejected, (state: TrashcanFilterState) => {
+            state.error = true;
+        });
         builder.addCase(clearTrashcanFilter.fulfilled, (_state: TrashcanFilterState) => {
             _state.type = initialState.type;
             _state.volume = initialState.volume;
             _state.fill = initialState.fill;
+            _state.error = initialState.error;
         });
     },
 });

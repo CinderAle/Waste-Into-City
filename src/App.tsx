@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { YMapComponentsProvider } from 'ymap3-components';
 
 import { checkAuth } from './api/checkAuth';
+import ErrorBoundary from './components/ErrorBoundary';
 import { API } from './constants/api';
 import { useAction } from './hooks/useAction';
 import { useTypedSelector } from './hooks/useTypedSelector';
@@ -19,9 +20,11 @@ function App() {
     }, [userRole]);
 
     return (
-        <YMapComponentsProvider apiKey={API.YMAPS_KEY} lang={API.YMAPS_LANG}>
-            <Admin />
-        </YMapComponentsProvider>
+        <ErrorBoundary>
+            <YMapComponentsProvider apiKey={API.YMAPS_KEY} lang={API.YMAPS_LANG}>
+                <Admin />
+            </YMapComponentsProvider>
+        </ErrorBoundary>
     );
 }
 

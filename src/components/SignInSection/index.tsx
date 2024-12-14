@@ -1,6 +1,7 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 import { useAction } from '@/hooks/useAction';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 type Credentials = {
     login: string;
@@ -9,7 +10,17 @@ type Credentials = {
 
 export const SignInSection = () => {
     const [credentials, setCredentials] = useState<Credentials>({ login: '', password: '' });
-    const { followSignUp, signIntoUserAccount } = useAction();
+    const { followSignUp, signIntoUserAccount, popupErrorMessage, hideSection, popupBasicMessage } = useAction();
+    const { isError, login } = useTypedSelector((state) => state.user);
+
+    useEffect(() => {
+        if (isError) {
+            popupErrorMessage('Failed to authorize');
+        } else if (login) {
+            popupBasicMessage('You have logged in!');
+            hideSection();
+        }
+    }, [isError, login]);
 
     const handleFieldChange = (field: keyof Credentials) => (event: ChangeEvent<HTMLInputElement>) => {
         setCredentials((credentials) => ({ ...credentials, [field]: event.target.value }));

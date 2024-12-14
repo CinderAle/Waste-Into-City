@@ -36,10 +36,12 @@ export const userSlice = createSlice({
                 state.login = login;
                 state.role = role;
                 state.isLoading = false;
+                state.isError = false;
             }
         );
         builder.addCase(signIntoUserAccount.pending, (state: UserState) => {
             state.isLoading = true;
+            state.isError = false;
         });
         builder.addCase(signIntoUserAccount.rejected, (state: UserState) => {
             state.isError = true;
@@ -47,6 +49,7 @@ export const userSlice = createSlice({
         builder.addCase(signOutUserAccount.pending, (state: UserState) => {
             state.role = initialState.role;
             state.login = initialState.login;
+            state.isError = false;
         });
         builder.addCase(signOutUserAccount.rejected, (state) => {
             state.isError = true;

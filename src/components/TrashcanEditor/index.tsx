@@ -31,7 +31,7 @@ const TrashcanEditor = () => {
     const [isShowingTypes, setShowingTypes] = useState(false);
     const userRole = useTypedSelector((state) => state.user.role);
     const trashcan = useTypedSelector((state) => state.menuSection.trashcan);
-    const { hideSection, clearSelectedTrashcan } = useAction();
+    const { hideSection } = useAction();
 
     const [selectedType, setSelectedType] = useState(TrashcanTypes.Common);
     const [volume, setVolume] = useState(0);
@@ -43,10 +43,11 @@ const TrashcanEditor = () => {
             setSelectedType(trashcan.type);
             setVolume(trashcan.volume);
             setFill(String(trashcan.fill));
+        } else {
+            setSelectedType(TrashcanTypes.Common);
+            setVolume(0);
+            setFill('0');
         }
-        return () => {
-            clearSelectedTrashcan();
-        };
     }, [trashcan]);
 
     const { startCoordinatesEditing, stopCoordinatesEditing } = useAction();
@@ -111,9 +112,27 @@ const TrashcanEditor = () => {
                 <ObligatoryFields>
                     <ImageInput value={trashcan?.image} onChange={handleImageChange} />
                     <TypingFields>
-                        <FillSlider value={fill} onChange={handleFillChange} name="fill" />
-                        <Input label="Volume" value={String(volume)} onChange={handleVolumeChange} name="volume" />
-                        <Select label="Type" onClick={handleClick} readOnly value={selectedType} name="type" />
+                        <FillSlider
+                            value={fill}
+                            onChange={handleFillChange}
+                            name="fill"
+                            disabled={userRole === UserRoles.Guest}
+                        />
+                        <Input
+                            label="Volume"
+                            value={String(volume)}
+                            onChange={handleVolumeChange}
+                            name="volume"
+                            disabled={userRole !== UserRoles.Admin}
+                        />
+                        <Select
+                            label="Type"
+                            onClick={handleClick}
+                            readOnly
+                            value={selectedType}
+                            name="type"
+                            disabled={userRole !== UserRoles.Admin}
+                        />
                     </TypingFields>
                 </ObligatoryFields>
                 {isShowingTypes && <TypeSelect onSelect={handleSelect} />}
@@ -129,7 +148,7 @@ const TrashcanEditor = () => {
                         Delete
                     </DeleteButton>
                 )}
-                <SaveButton type={BUTTON_SUBMIT_TYPE}>Save changes</SaveButton>
+                {userRole !== UserRoles.Guest && <SaveButton type={BUTTON_SUBMIT_TYPE}>Save changes</SaveButton>}
             </ButtonsArea>
         </EditorContainer>
     );

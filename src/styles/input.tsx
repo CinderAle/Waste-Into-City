@@ -53,19 +53,29 @@ const SelectField = styled(InputField)`
     cursor: pointer;
 `;
 
-export const Input = ({ label, value, onClick, onChange, readOnly, className, name }: InputProps) => {
+export const Input = ({ label, value, onClick, onChange, readOnly, className, name, disabled }: InputProps) => {
     return (
         <InputWrapper className={className}>
             <InputLabel>{label}</InputLabel>
-            <InputField value={value} onClick={onClick} onChange={onChange} readOnly={readOnly} name={name} />
+            <InputField
+                value={value}
+                onClick={onClick}
+                onChange={onChange}
+                readOnly={readOnly}
+                name={name}
+                disabled={disabled}
+            />
         </InputWrapper>
     );
 };
 
-export const Select = ({ label, value, onClick, onChange, readOnly, name }: InputProps) => {
+export const Select = ({ label, value, onClick, onChange, readOnly, name, disabled }: InputProps) => {
     const [isOpen, setOpen] = useState(false);
 
     const handleClick = () => {
+        if (disabled) {
+            return;
+        }
         setOpen(!isOpen);
         if (onClick) {
             onClick();
@@ -78,7 +88,7 @@ export const Select = ({ label, value, onClick, onChange, readOnly, name }: Inpu
             <SelectIcon $rotated={isOpen}>
                 <ReactSVG src={arrowIcon} />
             </SelectIcon>
-            <SelectField value={value} onChange={onChange} readOnly={readOnly} name={name} />
+            <SelectField value={value} onChange={onChange} readOnly={readOnly} name={name} disabled={disabled} />
         </SelectWrapper>
     );
 };

@@ -4,7 +4,7 @@ import { InputProps } from '@/types/inputProps';
 
 import { Slider, SliderContainer, SliderValue } from './styles';
 
-const FillSlider = ({ value, onChange }: InputProps) => {
+const FillSlider = ({ value, onChange, disabled }: InputProps) => {
     const [percents, setPercents] = useState(value);
 
     useEffect(() => {
@@ -18,7 +18,7 @@ const FillSlider = ({ value, onChange }: InputProps) => {
 
     return (
         <SliderContainer>
-            <Slider onChange={handleChange} value={String(percents)} />
+            <Slider onChange={handleChange} value={String(percents)} disabled={disabled} />
             <SliderValue>{percents}%</SliderValue>
         </SliderContainer>
     );

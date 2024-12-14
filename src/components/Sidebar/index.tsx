@@ -5,7 +5,7 @@ import { UserRoles } from '@/types/userRoles';
 import { AddButton, FilterButton, SidebarContainer, SignButton } from './styles';
 
 const Sidebar = () => {
-    const { addTrashcan, specifyFilters, followSignIn, signOutUserAccount } = useAction();
+    const { addTrashcan, specifyFilters, followSignIn, signOutUserAccount, hideSection } = useAction();
     const userRole = useTypedSelector((state) => state.user.role);
     const handleAddButtonClick = () => {
         addTrashcan();
@@ -21,6 +21,7 @@ const Sidebar = () => {
 
     const handleSignOutClick = () => {
         signOutUserAccount();
+        hideSection();
     };
 
     return (

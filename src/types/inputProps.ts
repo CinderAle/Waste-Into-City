@@ -8,4 +8,5 @@ export type InputProps = {
     readOnly?: boolean;
     className?: string;
     name?: string;
+    disabled?: boolean;
 };

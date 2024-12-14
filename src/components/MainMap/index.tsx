@@ -19,7 +19,7 @@ const defaultLocation: YMapLocationRequest = {
 
 const MainMap = () => {
     const ymapRef = useRef<YmapComponent>(null);
-    const { setCoordinates } = useAction();
+    const { setCoordinates, popupErrorMessage } = useAction();
     const isInEditingMode = useTypedSelector((state) => state.mapClick.isInEditingMode);
     const { section: currentSection, trashcan } = useTypedSelector((state) => state.menuSection);
     const [trashcans] = useConnectionSocket();
@@ -32,7 +32,7 @@ const MainMap = () => {
     }, [isInEditingMode]);
 
     useEffect(() => {
-        getAllTrashcans().catch((err) => console.log(err.message));
+        getAllTrashcans().catch((err) => popupErrorMessage(err.message));
     }, []);
 
     return (

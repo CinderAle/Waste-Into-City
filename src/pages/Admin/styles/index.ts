@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+import { PopupMessageBox } from '@/components/PopupMessageBox';
 import { COLORS } from '@/constants/colors';
 
 export const Controls = styled.section`
@@ -15,4 +16,11 @@ export const Controls = styled.section`
     border-top-right-radius: 15px;
     box-shadow: 1px 0 10px ${COLORS.BLACK};
     overflow: hidden;
+`;
+
+export const PopupMessage = styled(PopupMessageBox)`
+    position: absolute;
+    right: 30px;
+    bottom: 30px;
+    z-index: 1;
 `;

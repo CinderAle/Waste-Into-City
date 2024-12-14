@@ -4,6 +4,8 @@ import { connectionSocket } from '@/api/connectionSocket';
 import { SOCKET_MESSAGES } from '@/constants/socketMessages';
 import { Trashcan } from '@/types/trashcan';
 
+import { useAction } from './useAction';
+
 type Response = any & {
     _id: string;
 };
@@ -14,6 +16,7 @@ const castToTrashcan = (response: Response): Trashcan => {
 
 export const useConnectionSocket = (): [Trashcan[], (trashcans: Trashcan[]) => void] => {
     const [trashcans, setTrashcans] = useState<Trashcan[]>([]);
+    const { popupBasicMessage } = useAction();
 
     useEffect(() => {
         connectionSocket.connect();
@@ -33,6 +36,7 @@ export const useConnectionSocket = (): [Trashcan[], (trashcans: Trashcan[]) => v
 
         connectionSocket.on(SOCKET_MESSAGES.LIST_TRASHCANS, (responses: Response[]) => {
             setTrashcans(responses.map((response) => castToTrashcan(response)));
+            popupBasicMessage('All trashcans are listed!');
         });
 
         return () => {

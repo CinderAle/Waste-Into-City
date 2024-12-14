@@ -32,11 +32,10 @@ const filterToFields = (filters: TrashcanFilter): FilterFields => {
 
 const FilterSection = () => {
     const trashcanFilter = useTypedSelector((state) => state.trashcanFilter);
-    const { setTrashcanFilter, clearTrashcanFilter } = useAction();
+    const { setTrashcanFilter, clearTrashcanFilter, popupErrorMessage } = useAction();
     const [{ types, minVolume, maxVolume, minFill, maxFill }, setFilterFields] = useState<FilterFields>(
         filterToFields(trashcanFilter)
     );
-    const [error, setError] = useState('');
 
     const handleTypeSelect = (trashcanType: TrashcanTypes) => {
         if (types.has(trashcanType)) {
@@ -51,12 +50,10 @@ const FilterSection = () => {
 
     const handleInputChange = (property: keyof FilterFields) => (event: ChangeEvent<HTMLInputElement>) => {
         setFilterFields((fields) => ({ ...fields, [property]: event.target.value }));
-        setError('');
     };
 
     const handleClearFilters = () => {
         clearTrashcanFilter();
-        setError('');
     };
 
     const handleApplyFilters = () => {
@@ -67,7 +64,7 @@ const FilterSection = () => {
                 fill: { $gt: Number(minFill), $lt: Number(maxFill) },
             });
         } else {
-            setError('All fields must be numeric!');
+            popupErrorMessage('All fields must be numeric!');
         }
     };
 
@@ -90,7 +87,6 @@ const FilterSection = () => {
                     <S.FilterInput label="Min fill, %" value={minFill} onChange={handleInputChange('minFill')} />
                     <S.FilterInput label="Max fill, %" value={maxFill} onChange={handleInputChange('maxFill')} />
                 </S.InputPairContainer>
-                <p>{error}</p>
                 <TypeSelect onSelect={handleTypeSelect} selection={types} />
             </S.FieldsContainer>
             <S.ButtonsContainer>

@@ -1,5 +1,8 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 
+import { useTypedSelector } from '@/hooks/useTypedSelector';
+import { UserRoles } from '@/types/userRoles';
+
 import { ImagePreview, InputContainer, UploadButton } from './styles';
 
 type Props = {
@@ -9,6 +12,7 @@ type Props = {
 
 const ImageInput = ({ value, onChange }: Props) => {
     const [preview, setPreview] = useState<string>(value ?? '');
+    const userRole = useTypedSelector((state) => state.user.role);
     useEffect(() => {
         setPreview(value ?? '');
     }, [value]);
@@ -23,7 +27,7 @@ const ImageInput = ({ value, onChange }: Props) => {
     return (
         <InputContainer>
             <ImagePreview src={preview} />
-            <UploadButton onChange={handleChange} />
+            <UploadButton onChange={handleChange} disabled={userRole !== UserRoles.Admin} />
         </InputContainer>
     );
 };
